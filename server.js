@@ -12,7 +12,7 @@ const bot = new TelegramBot(BOT_TOKEN);
 
 app.use(express.json());
 
-// PING ENDPOINT
+// ✅ PING ENDPOINT - BOTNI USHLAB TURISH UCHUN
 app.get('/ping', (req, res) => {
   console.log('🏓 Ping qabul qilindi - Bot faol');
   res.json({ 
@@ -51,6 +51,7 @@ app.get('/', (req, res) => {
         <p>✅ Bot faol holatda</p>
         <p>🕒 ${new Date().toLocaleString('uz-UZ')}</p>
         <p><a href="/webapp.html" style="color: #ffd700;">Web App ni ochish</a></p>
+        <p><a href="/admin.html" style="color: #ffd700;">Admin Paneli</a></p>
       </div>
     </body>
     </html>
@@ -66,6 +67,22 @@ app.post('/webhook', (req, res) => {
 // Web App sahifasi
 app.get('/webapp.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'webapp.html'));
+});
+
+// ✅ YANGI: Admin sahifasi
+app.get('/admin.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// ✅ YANGI: Admin statistikasi API
+app.get('/api/stats', (req, res) => {
+  res.json({
+    totalUsers: 125,
+    totalMessages: 47,
+    activeUsers: 89,
+    channels: 1,
+    lastUpdate: new Date().toLocaleString('uz-UZ')
+  });
 });
 
 function isAdmin(userId) {
@@ -111,15 +128,23 @@ bot.onText(/\/start/, (msg) => {
   }
 
   const keyboard = {
-    inline_keyboard: [[
-      {
-        text: '🕌 Namoz vaqtlarini yuborish',
-        web_app: { url: `https://islomxon-namoz-bot.onrender.com/webapp.html` }
-      }
-    ]]
+    inline_keyboard: [
+      [
+        {
+          text: '🕌 Namoz Vaqtlarini Kiriting',
+          web_app: { url: `https://islomxon-namoz-bot.onrender.com/webapp.html` }
+        }
+      ],
+      [
+        {
+          text: '📊 Admin Paneli',
+          web_app: { url: `https://islomxon-namoz-bot.onrender.com/admin.html` }
+        }
+      ]
+    ]
   };
 
-  bot.sendMessage(chatId, `Assalomu alaykum! *Islomxon Namoz Vaqti Bot* ga xush kelibsiz!\n\nNamoz vaqtlarini yuborish uchun quyidagi tugmani bosing:`, {
+  bot.sendMessage(chatId, `Assalomu alaykum! *Islomxon Namoz Vaqti Bot* ga xush kelibsiz!\n\nBotni boshqarish uchun quyidagi tugmalardan foydalaning:`, {
     reply_markup: keyboard,
     parse_mode: 'Markdown'
   });
@@ -185,6 +210,7 @@ app.listen(PORT, () => {
   console.log(`✅ Server ${PORT}-portda ishga tushdi`);
   console.log(`🌐 Asosiy sahifa: https://islomxon-namoz-bot.onrender.com`);
   console.log(`🤖 Web App: https://islomxon-namoz-bot.onrender.com/webapp.html`);
+  console.log(`📊 Admin Panel: https://islomxon-namoz-bot.onrender.com/admin.html`);
   console.log(`📊 Kanallar: ${CHANNELS.join(', ')}`);
   console.log(`👤 Adminlar: ${ADMIN_IDS.join(', ')}`);
   console.log(`🎉 ==========================================\n`);
