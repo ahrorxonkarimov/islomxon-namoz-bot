@@ -5,212 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Islomxon Namoz Vaqtlari</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
         body {
+            font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #43AB34 0%, #2D7D32 100%);
             min-height: 100vh;
             padding: 20px;
-            color: #333;
+            margin: 0;
         }
-
         .container {
             max-width: 500px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-
         .header {
             background: linear-gradient(135deg, #43AB34, #2D7D32);
-            padding: 25px 20px;
+            padding: 20px;
             text-align: center;
             color: white;
         }
-
-        .title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
         .main {
-            padding: 25px 20px;
+            padding: 20px;
         }
-
-        .form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
         .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            margin-bottom: 15px;
         }
-
-        .input-group label {
+        label {
+            display: block;
+            margin-bottom: 5px;
             font-weight: bold;
             color: #2D7D32;
-            font-size: 14px;
         }
-
-        .input-group input,
-        .input-group textarea {
-            padding: 15px;
+        input, textarea {
+            width: 100%;
+            padding: 12px;
             border: 2px solid #E8F5E8;
-            border-radius: 10px;
-            background: #F8FFF8;
+            border-radius: 8px;
             font-size: 16px;
         }
-
-        .input-group textarea {
-            resize: vertical;
+        textarea {
             min-height: 80px;
         }
-
         .prayer-times {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 10px;
         }
-
-        @media (max-width: 480px) {
-            .prayer-times {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .submit-btn {
-            background: linear-gradient(135deg, #43AB34, #2D7D32);
+            width: 100%;
+            background: #43AB34;
             color: white;
             border: none;
-            padding: 18px;
-            border-radius: 10px;
+            padding: 15px;
+            border-radius: 8px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
         }
-
-        .submit-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 15px;
+            display: none;
         }
-
-        .success-message {
+        .success {
             background: #43AB34;
             color: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-            display: none;
         }
-
-        .error-message {
+        .error {
             background: #ff6b6b;
             color: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .quote {
-            margin-top: 25px;
-            padding: 20px;
-            background: #E8F5E8;
-            border-radius: 10px;
-            text-align: center;
-            color: #2D7D32;
-            border-left: 4px solid #43AB34;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header class="header">
-            <h1 class="title">🕌 Islomxon Jome Masjidi</h1>
-            <p>Namoz Vaqtlari Kiritish</p>
-        </header>
-
-        <main class="main">
-            <div id="errorMessage" class="error-message"></div>
-            <div id="successMessage" class="success-message"></div>
-
-            <form id="prayerForm" class="form">
+        <div class="header">
+            <h1>🕌 Islomxon Masjidi</h1>
+            <p>Namoz Vaqtlari</p>
+        </div>
+        
+        <div class="main">
+            <div id="message" class="message"></div>
+            
+            <form id="prayerForm">
                 <div class="input-group">
-                    <label>📅 Sana</label>
-                    <input type="text" id="sana" required placeholder="Masalan: 20-dekabr, 2024">
+                    <label>Sana</label>
+                    <input type="text" id="sana" required placeholder="20-dekabr, 2024">
                 </div>
-
+                
                 <div class="prayer-times">
                     <div class="input-group">
-                        <label>🌅 Bomdod</label>
+                        <label>Bomdod</label>
                         <input type="text" id="bomdod" required placeholder="06:00">
                     </div>
-
                     <div class="input-group">
-                        <label>☀️ Peshin</label>
+                        <label>Peshin</label>
                         <input type="text" id="peshin" required placeholder="12:30">
                     </div>
-
                     <div class="input-group">
-                        <label>🌤️ Asr</label>
+                        <label>Asr</label>
                         <input type="text" id="asr" required placeholder="15:45">
                     </div>
-
                     <div class="input-group">
-                        <label>🌇 Shom</label>
+                        <label>Shom</label>
                         <input type="text" id="shom" required placeholder="17:20">
                     </div>
-
                     <div class="input-group">
-                        <label>🌙 Hufton</label>
+                        <label>Hufton</label>
                         <input type="text" id="hufton" required placeholder="18:45">
                     </div>
                 </div>
-
+                
                 <div class="input-group">
-                    <label>💫 Izoh (ixtiyoriy)</label>
+                    <label>Izoh (ixtiyoriy)</label>
                     <textarea id="izoh" placeholder="Qo'shimcha ma'lumot..."></textarea>
                 </div>
-
+                
                 <button type="submit" class="submit-btn" id="submitBtn">
                     📤 Kanallarga Yuborish
                 </button>
             </form>
-
-            <div class="quote">
-                <p>"Namozni ado etganingizdan so'ng Allohni eslang." (Niso 103)</p>
-            </div>
-        </main>
+        </div>
     </div>
 
     <script>
+        // Telegram Web App
         const tg = window.Telegram.WebApp;
         tg.expand();
+        
+        console.log('WebApp ochildi');
+        console.log('User:', tg.initDataUnsafe.user);
 
         document.getElementById('prayerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            console.log('Form yuborildi');
             
             const submitBtn = document.getElementById('submitBtn');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
+            const messageDiv = document.getElementById('message');
             
             submitBtn.disabled = true;
             submitBtn.textContent = 'Yuborilmoqda...';
-            errorMessage.style.display = 'none';
+            messageDiv.style.display = 'none';
 
             try {
                 const formData = {
@@ -221,8 +160,10 @@
                     hufton: document.getElementById('hufton').value,
                     sana: document.getElementById('sana').value,
                     izoh: document.getElementById('izoh').value,
-                    userId: tg.initDataUnsafe.user?.id || 5985723887
+                    userId: tg.initDataUnsafe.user?.id
                 };
+
+                console.log('Yuborilayotgan maʼlumotlar:', formData);
 
                 const response = await fetch('/submit-prayer-times', {
                     method: 'POST',
@@ -233,10 +174,12 @@
                 });
 
                 const result = await response.json();
+                console.log('Server javobi:', result);
 
                 if (result.success) {
-                    successMessage.style.display = 'block';
-                    successMessage.textContent = '✅ ' + result.message;
+                    messageDiv.className = 'message success';
+                    messageDiv.textContent = '✅ ' + result.message;
+                    messageDiv.style.display = 'block';
                     
                     setTimeout(() => {
                         tg.close();
@@ -246,18 +189,23 @@
                 }
 
             } catch (error) {
-                errorMessage.style.display = 'block';
-                errorMessage.textContent = '❌ ' + error.message;
+                console.error('Xato:', error);
+                messageDiv.className = 'message error';
+                messageDiv.textContent = '❌ ' + error.message;
+                messageDiv.style.display = 'block';
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = '📤 Kanallarga Yuborish';
             }
         });
 
-        // Bugungi sanani avtomatik kiritish
+        // Bugungi sana
         const today = new Date();
-        const options = { day: 'numeric', month: 'long', year: 'numeric' };
-        document.getElementById('sana').value = today.toLocaleDateString('uz-UZ', options);
+        document.getElementById('sana').value = today.toLocaleDateString('uz-UZ', { 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric' 
+        });
     </script>
 </body>
 </html>
