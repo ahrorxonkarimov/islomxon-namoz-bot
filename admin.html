@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Islomxon Masjidi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-card h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .admin-list {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .admin-list h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .admin-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .admin-item:last-child {
+            border-bottom: none;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .action-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .logs {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 5px;
+            border-left: 3px solid #4CAF50;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🕌 Islomxon Jome Masjidi - Admin Panel</h1>
+            <p>Bot va kanal boshqaruvi</p>
+        </div>
+        
+        <!-- Statistikalar -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Jami Adminlar</h3>
+                <div class="number" id="adminCount">3</div>
+            </div>
+            <div class="stat-card">
+                <h3>Bugungi Postlar</h3>
+                <div class="number" id="todayPosts">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Bot Holati</h3>
+                <div class="number">✅</div>
+            </div>
+            <div class="stat-card">
+                <h3>Kanal Obunachilar</h3>
+                <div class="number" id="subscribers">-</div>
+            </div>
+        </div>
+        
+        <!-- Adminlar ro'yxati -->
+        <div class="admin-list">
+            <h3>👥 Adminlar Ro'yxati</h3>
+            <div id="adminsList">
+                <div class="admin-item">
+                    <span>7894421569</span>
+                    <span style="color: #4CAF50;">✅ Faol</span>
+                </div>
+                <div class="admin-item">
+                    <span>5985723887</span>
+                    <span style="color: #4CAF50;">✅ Faol</span>
+                </div>
+                <div class="admin-item">
+                    <span>382697989</span>
+                    <span style="color: #4CAF50;">✅ Faol</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tezkor Amallar -->
+        <div class="quick-actions">
+            <button class="action-btn" onclick="openWebApp()">
+                📱 WebApp ochish
+            </button>
+            <button class="action-btn secondary" onclick="openChannel()">
+                📢 Kanalni ko'rish
+            </button>
+            <button class="action-btn" onclick="testBot()">
+                🤖 Botni test qilish
+            </button>
+            <button class="action-btn secondary" onclick="refreshStats()">
+                🔄 Yangilash
+            </button>
+        </div>
+        
+        <!-- Loglar -->
+        <div class="logs">
+            <h3>📊 So'nggi Harakatlar</h3>
+            <div id="logContainer">
+                <div class="log-entry">🕒 Panel ochildi - {{time}}</div>
+                <div class="log-entry">✅ Bot ishlayapti</div>
+                <div class="log-entry">👥 3 ta admin mavjud</div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>🚀 Created by Abdulloh | عبدالله</p>
+            <p>📱 https://t.me/Abdulloh_Ummati_Muhammad</p>
+            <p>🕒 {{currentTime}}</p>
+        </div>
+    </div>
+
+    <script>
+        // Vaqtni yangilash
+        function updateTime() {
+            const now = new Date();
+            document.querySelectorAll('{{time}}').forEach(el => {
+                el.textContent = now.toLocaleString('uz-UZ');
+            });
+            document.querySelectorAll('{{currentTime}}').forEach(el => {
+                el.textContent = now.toLocaleString('uz-UZ');
+            });
+        }
+        
+        // Tezkor amallar
+        function openWebApp() {
+            window.open('/webapp.html', '_blank');
+            addLog('📱 WebApp ochildi');
+        }
+        
+        function openChannel() {
+            window.open('https://t.me/Islomxon_masjidi', '_blank');
+            addLog('📢 Kanal ochildi');
+        }
+        
+        function testBot() {
+            window.open('https://t.me/Islomxon_Masjidi_Namoz_Vaqti_Bot', '_blank');
+            addLog('🤖 Bot test qilindi');
+        }
+        
+        function refreshStats() {
+            addLog('🔄 Statistikalar yangilandi');
+            // Bu yerda statistikani yangilash kodi bo'ladi
+        }
+        
+        // Log qo'shish
+        function addLog(message) {
+            const logContainer = document.getElementById('logContainer');
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.textContent = `🕒 ${new Date().toLocaleTimeString('uz-UZ')} - ${message}`;
+            logContainer.prepend(logEntry);
+        }
+        
+        // Dastlabki sozlash
+        updateTime();
+        setInterval(updateTime, 60000); // Har minutda yangilash
+        
+        // Sahifa yuklanganda
+        addLog('🎯 Admin panel ochildi');
+    </script>
+</body>
+</html>
