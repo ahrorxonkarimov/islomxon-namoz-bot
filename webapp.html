@@ -4,7 +4,200 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Islomxon Namoz Vaqtlari</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d3436;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .main {
+            padding: 30px 20px;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: #2d3436;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: #e17055;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(225, 112, 85, 0.3);
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .prayer-times {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 480px) {
+            .prayer-times {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .quote {
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            border-radius: 12px;
+            text-align: center;
+            font-style: italic;
+            color: #2d3436;
+            border-left: 4px solid #e17055;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 15px;
+            text-align: center;
+            color: #636e72;
+            font-size: 14px;
+        }
+
+        /* Animatsiyalar */
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #55efc4, #00b894);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -14,6 +207,10 @@
         </header>
 
         <main class="main">
+            <div id="successMessage" class="success-message">
+                ✅ Muvaffaqiyatli yuborildi!
+            </div>
+
             <form id="prayerForm" class="form">
                 <div class="input-group">
                     <label for="sana">📅 Sana</label>
@@ -54,7 +251,7 @@
 
                 <button type="submit" class="submit-btn">
                     <span class="btn-text">📤 Namoz Vaqtlarini Yuborish</span>
-                    <div class="loading-spinner" style="display: none;"></div>
+                    <div class="loading-spinner" id="loadingSpinner"></div>
                 </button>
             </form>
 
@@ -69,18 +266,17 @@
     </div>
 
     <script>
-        // Telegram Web App initializatsiyasi
         const tg = window.Telegram.WebApp;
         tg.expand();
         tg.enableClosingConfirmation();
 
-        // Form yuborish
         document.getElementById('prayerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const submitBtn = document.querySelector('.submit-btn');
             const btnText = document.querySelector('.btn-text');
-            const spinner = document.querySelector('.loading-spinner');
+            const spinner = document.getElementById('loadingSpinner');
+            const successMessage = document.getElementById('successMessage');
             
             // Loading holati
             btnText.style.display = 'none';
@@ -99,6 +295,8 @@
                     userId: tg.initDataUnsafe.user?.id
                 };
 
+                console.log('Yuborilayotgan maʼlumotlar:', formData);
+
                 const response = await fetch('/submit-prayer-times', {
                     method: 'POST',
                     headers: {
@@ -108,33 +306,27 @@
                 });
 
                 const result = await response.json();
+                console.log('Server javobi:', result);
 
                 if (result.success) {
-                    tg.showPopup({
-                        title: 'Muvaffaqiyatli!',
-                        message: result.message,
-                        buttons: [{ type: 'ok' }]
-                    });
+                    successMessage.style.display = 'block';
+                    successMessage.textContent = '✅ ' + result.message;
                     
                     // Formani tozalash
                     document.getElementById('prayerForm').reset();
                     
-                    // Web Appni yopish
+                    // 3 soniyadan keyin yopish
                     setTimeout(() => {
                         tg.close();
-                    }, 2000);
+                    }, 3000);
                 } else {
                     throw new Error(result.error);
                 }
 
             } catch (error) {
-                tg.showPopup({
-                    title: 'Xato!',
-                    message: error.message,
-                    buttons: [{ type: 'ok' }]
-                });
+                console.error('Xato:', error);
+                alert('Xato: ' + error.message);
             } finally {
-                // Loading holatini olib tashlash
                 btnText.style.display = 'block';
                 spinner.style.display = 'none';
                 submitBtn.disabled = false;
