@@ -1,7 +1,7 @@
 {
-  "name": "islomxon-namoz-bot",
-  "version": "2.0.0",
-  "description": "Professional Islomxon Namoz Vaqtlari Boti",
+  "name": "namoz-vaqti-bot",
+  "version": "1.0.0",
+  "description": "ISLOMXON MASJIDI uchun namoz vaqti boti",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -10,7 +10,7 @@
     "express": "^4.18.2",
     "node-telegram-bot-api": "^0.64.0"
   },
-  "keywords": ["telegram", "bot", "namoz", "islom"],
-  "author": "Abdulloh Ummati Muhammad",
-  "license": "MIT"
+  "engines": {
+    "node": "18.x"
+  }
 }
