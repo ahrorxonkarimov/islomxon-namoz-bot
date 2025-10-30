@@ -1,6 +1,7 @@
 {
   "name": "islomxon-namoz-bot",
-  "version": "1.0.0", 
+  "version": "2.0.0",
+  "description": "Professional Islomxon Namoz Vaqtlari Boti",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -8,5 +9,8 @@
   "dependencies": {
     "express": "^4.18.2",
     "node-telegram-bot-api": "^0.64.0"
-  }
+  },
+  "keywords": ["telegram", "bot", "namoz", "islom"],
+  "author": "Abdulloh Ummati Muhammad",
+  "license": "MIT"
 }
