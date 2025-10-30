@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islomxon Namoz Vaqtlari</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">🕌 Islomxon Jome Masjidi</h1>
+            <p class="subtitle">Namoz Vaqtlari</p>
+        </header>
+
+        <main class="main">
+            <form id="prayerForm" class="form">
+                <div class="input-group">
+                    <label for="sana">📅 Sana</label>
+                    <input type="text" id="sana" name="sana" required placeholder="Masalan: 15-dekabr, 2024">
+                </div>
+
+                <div class="prayer-times">
+                    <div class="input-group">
+                        <label for="bomdod">🌅 Bomdod</label>
+                        <input type="text" id="bomdod" name="bomdod" required placeholder="06:00">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="peshin">☀️ Peshin</label>
+                        <input type="text" id="peshin" name="peshin" required placeholder="12:30">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="asr">🌤️ Asr</label>
+                        <input type="text" id="asr" name="asr" required placeholder="15:45">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="shom">🌇 Shom</label>
+                        <input type="text" id="shom" name="shom" required placeholder="18:20">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="hufton">🌙 Hufton</label>
+                        <input type="text" id="hufton" name="hufton" required placeholder="19:45">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="izoh">💫 Izoh (ixtiyoriy)</label>
+                    <textarea id="izoh" name="izoh" placeholder="Qo'shimcha ma'lumot yoki eslatma..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <span class="btn-text">📤 Namoz Vaqtlarini Yuborish</span>
+                    <div class="loading-spinner" style="display: none;"></div>
+                </button>
+            </form>
+
+            <div class="quote">
+                <p>"Namozni ado etganingizdan so'ng Allohni eslang." (Niso 103)</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Islomxon Namoz Vaqti Bot</p>
+        </footer>
+    </div>
+
+    <script>
+        // Telegram Web App initializatsiyasi
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.enableClosingConfirmation();
+
+        // Form yuborish
+        document.getElementById('prayerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.querySelector('.submit-btn');
+            const btnText = document.querySelector('.btn-text');
+            const spinner = document.querySelector('.loading-spinner');
+            
+            // Loading holati
+            btnText.style.display = 'none';
+            spinner.style.display = 'block';
+            submitBtn.disabled = true;
+
+            try {
+                const formData = {
+                    bomdod: document.getElementById('bomdod').value,
+                    peshin: document.getElementById('peshin').value,
+                    asr: document.getElementById('asr').value,
+                    shom: document.getElementById('shom').value,
+                    hufton: document.getElementById('hufton').value,
+                    sana: document.getElementById('sana').value,
+                    izoh: document.getElementById('izoh').value,
+                    userId: tg.initDataUnsafe.user?.id
+                };
+
+                const response = await fetch('/submit-prayer-times', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    tg.showPopup({
+                        title: 'Muvaffaqiyatli!',
+                        message: result.message,
+                        buttons: [{ type: 'ok' }]
+                    });
+                    
+                    // Formani tozalash
+                    document.getElementById('prayerForm').reset();
+                    
+                    // Web Appni yopish
+                    setTimeout(() => {
+                        tg.close();
+                    }, 2000);
+                } else {
+                    throw new Error(result.error);
+                }
+
+            } catch (error) {
+                tg.showPopup({
+                    title: 'Xato!',
+                    message: error.message,
+                    buttons: [{ type: 'ok' }]
+                });
+            } finally {
+                // Loading holatini olib tashlash
+                btnText.style.display = 'block';
+                spinner.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Animatsiyalar
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.input-group, .submit-btn');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+                el.classList.add('fade-in-up');
+            });
+        });
+    </script>
+</body>
+</html>
