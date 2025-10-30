@@ -3,232 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islomxon - Namoz Vaqtlari</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Islomxon Namoz Vaqtlari</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-        }
-
-        :root {
-            --primary: #43AB34;
-            --primary-dark: #2D7D32;
-            --secondary: #FF6B6B;
-            --accent: #FFD700;
-            --text: #2D3748;
-            --text-light: #718096;
-            --bg: #FFFFFF;
-            --bg-secondary: #F8FAFC;
-            --border: #E2E8F0;
-            --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            --gradient: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            font-family: Arial, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #43AB34 0%, #2D7D32 100%);
             min-height: 100vh;
             padding: 20px;
-            color: var(--text);
+            color: #333;
         }
 
         .container {
             max-width: 500px;
             margin: 0 auto;
-            background: var(--bg);
-            border-radius: 24px;
+            background: white;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        /* HEADER */
         .header {
-            background: var(--gradient);
-            padding: 30px 25px;
+            background: linear-gradient(135deg, #43AB34, #2D7D32);
+            padding: 25px 20px;
             text-align: center;
             color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            animation: float 20s linear infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(-20px, -20px) rotate(360deg); }
-        }
-
-        .logo {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-            display: block;
-            animation: bounce 2s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
         }
 
         .title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            position: relative;
-            z-index: 2;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
 
-        .subtitle {
-            font-size: 1rem;
-            opacity: 0.9;
-            font-weight: 500;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* MAIN CONTENT */
         .main {
-            padding: 30px 25px;
+            padding: 25px 20px;
         }
 
-        /* MESSAGES */
-        .message {
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 25px;
-            text-align: center;
-            font-weight: 600;
-            display: none;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .success-message {
-            background: linear-gradient(135deg, #48BB78, #38A169);
-            color: white;
-        }
-
-        .error-message {
-            background: linear-gradient(135deg, #FC8181, #E53E3E);
-            color: white;
-        }
-
-        /* PREVIEW */
-        .preview-section {
-            background: var(--bg-secondary);
-            padding: 25px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            border: 2px dashed var(--primary);
-            display: none;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .preview-title {
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 15px;
-            text-align: center;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .preview-content {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            white-space: pre-line;
-            border: 1px solid var(--border);
-            font-family: 'Courier New', monospace;
-        }
-
-        /* FORM */
         .form {
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 20px;
         }
 
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
         .input-group label {
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .input-group label i {
-            width: 20px;
-            text-align: center;
+            font-weight: bold;
+            color: #2D7D32;
+            font-size: 14px;
         }
 
         .input-group input,
-        .input-group textarea,
-        .input-group select {
-            padding: 18px 20px;
-            border: 2px solid var(--border);
-            border-radius: 14px;
-            background: var(--bg);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            outline: none;
-            font-family: inherit;
-        }
-
-        .input-group input:focus,
-        .input-group textarea:focus,
-        .input-group select:focus {
-            border-color: var(--primary);
-            background: white;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(67, 171, 52, 0.15);
+        .input-group textarea {
+            padding: 15px;
+            border: 2px solid #E8F5E8;
+            border-radius: 10px;
+            background: #F8FFF8;
+            font-size: 16px;
         }
 
         .input-group textarea {
             resize: vertical;
-            min-height: 100px;
-            line-height: 1.5;
+            min-height: 80px;
         }
 
-        /* PRAYER TIMES GRID */
         .prayer-times {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
         }
 
         @media (max-width: 480px) {
@@ -237,480 +89,130 @@
             }
         }
 
-        .time-input {
-            position: relative;
-        }
-
-        .time-input input {
-            padding-right: 50px;
-        }
-
-        .time-format {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light);
-            font-size: 0.9rem;
-            pointer-events: none;
-        }
-
-        /* BUTTONS */
-        .button-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .submit-btn {
+            background: linear-gradient(135deg, #43AB34, #2D7D32);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
             margin-top: 10px;
         }
 
-        .btn {
-            padding: 20px;
-            border-radius: 14px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            text-align: center;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            border: none;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary {
-            background: var(--gradient);
-            color: white;
-            box-shadow: 0 6px 20px rgba(67, 171, 52, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(67, 171, 52, 0.4);
-        }
-
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--secondary), #EE5A24);
-            color: white;
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.3);
-        }
-
-        .btn-secondary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
-        }
-
-        .btn:disabled {
+        .submit-btn:disabled {
             opacity: 0.7;
             cursor: not-allowed;
-            transform: none !important;
         }
 
-        .loading-spinner {
-            width: 24px;
-            height: 24px;
-            border: 3px solid transparent;
-            border-top: 3px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .success-message {
+            background: #43AB34;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
             display: none;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* QUOTE SECTION */
-        .quote {
-            margin-top: 35px;
-            padding: 25px;
-            background: linear-gradient(135deg, #E8F5E8, #C8E6C9);
-            border-radius: 18px;
-            text-align: center;
-            color: var(--primary-dark);
-            border-left: 5px solid var(--primary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .quote::before {
-            content: '"';
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            font-size: 4rem;
-            color: rgba(67, 171, 52, 0.1);
-            font-family: serif;
-        }
-
-        .quote-text {
-            font-style: italic;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            position: relative;
-            z-index: 2;
-        }
-
-        .quote-reference {
-            margin-top: 10px;
-            font-size: 0.85rem;
-            opacity: 0.8;
-            font-weight: 600;
-        }
-
-        /* FOOTER */
-        .footer {
-            background: linear-gradient(135deg, var(--primary-dark), #1B5E20);
-            padding: 25px;
-            text-align: center;
+        .error-message {
+            background: #ff6b6b;
             color: white;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
         }
 
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .footer-text {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .admin-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            transition: opacity 0.3s;
-        }
-
-        .admin-link:hover {
-            opacity: 0.8;
-        }
-
-        /* ANIMATIONS */
-        .fade-in-up {
-            animation: fadeInUp 0.6s ease forwards;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* CALENDAR STYLES */
-        .calendar-container {
-            position: relative;
-        }
-
-        .calendar-btn {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--primary);
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 6px;
-            transition: background 0.3s;
-        }
-
-        .calendar-btn:hover {
-            background: rgba(67, 171, 52, 0.1);
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 380px) {
-            .header {
-                padding: 25px 20px;
-            }
-            
-            .main {
-                padding: 25px 20px;
-            }
-            
-            .btn {
-                padding: 18px;
-                font-size: 1rem;
-            }
+        .quote {
+            margin-top: 25px;
+            padding: 20px;
+            background: #E8F5E8;
+            border-radius: 10px;
+            text-align: center;
+            color: #2D7D32;
+            border-left: 4px solid #43AB34;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- HEADER -->
         <header class="header">
-            <div class="logo">🕌</div>
-            <h1 class="title">Islomxon Jome Masjidi</h1>
-            <p class="subtitle">Namoz Vaqtlari Kiritish</p>
+            <h1 class="title">🕌 Islomxon Jome Masjidi</h1>
+            <p>Namoz Vaqtlari Kiritish</p>
         </header>
 
-        <!-- MAIN CONTENT -->
         <main class="main">
-            <!-- MESSAGES -->
-            <div id="errorMessage" class="message error-message"></div>
-            <div id="successMessage" class="message success-message"></div>
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
 
-            <!-- PREVIEW SECTION -->
-            <div id="previewSection" class="preview-section">
-                <div class="preview-title">
-                    <i class="fas fa-eye"></i>
-                    Post Ko'rinishi
-                </div>
-                <div id="previewContent" class="preview-content"></div>
-            </div>
-
-            <!-- FORM -->
             <form id="prayerForm" class="form">
-                <!-- SANA -->
                 <div class="input-group">
-                    <label for="sana">
-                        <i class="fas fa-calendar-alt"></i>
-                        Sana
-                    </label>
-                    <div class="calendar-container">
-                        <input type="text" id="sana" name="sana" required 
-                               placeholder="Masalan: 20-dekabr, 2024"
-                               oninput="updatePreview()">
-                        <button type="button" class="calendar-btn" onclick="showCalendar()">
-                            <i class="fas fa-calendar"></i>
-                        </button>
-                    </div>
+                    <label>📅 Sana</label>
+                    <input type="text" id="sana" required placeholder="Masalan: 20-dekabr, 2024">
                 </div>
 
-                <!-- NAMOZ VAQTLARI -->
                 <div class="prayer-times">
                     <div class="input-group">
-                        <label for="bomdod">
-                            <i class="fas fa-sun"></i>
-                            Bomdod
-                        </label>
-                        <div class="time-input">
-                            <input type="text" id="bomdod" name="bomdod" required 
-                                   placeholder="06:00" oninput="updatePreview()">
-                            <span class="time-format">HH:MM</span>
-                        </div>
+                        <label>🌅 Bomdod</label>
+                        <input type="text" id="bomdod" required placeholder="06:00">
                     </div>
 
                     <div class="input-group">
-                        <label for="peshin">
-                            <i class="fas fa-sun"></i>
-                            Peshin
-                        </label>
-                        <div class="time-input">
-                            <input type="text" id="peshin" name="peshin" required 
-                                   placeholder="12:30" oninput="updatePreview()">
-                            <span class="time-format">HH:MM</span>
-                        </div>
+                        <label>☀️ Peshin</label>
+                        <input type="text" id="peshin" required placeholder="12:30">
                     </div>
 
                     <div class="input-group">
-                        <label for="asr">
-                            <i class="fas fa-cloud-sun"></i>
-                            Asr
-                        </label>
-                        <div class="time-input">
-                            <input type="text" id="asr" name="asr" required 
-                                   placeholder="15:45" oninput="updatePreview()">
-                            <span class="time-format">HH:MM</span>
-                        </div>
+                        <label>🌤️ Asr</label>
+                        <input type="text" id="asr" required placeholder="15:45">
                     </div>
 
                     <div class="input-group">
-                        <label for="shom">
-                            <i class="fas fa-sunset"></i>
-                            Shom
-                        </label>
-                        <div class="time-input">
-                            <input type="text" id="shom" name="shom" required 
-                                   placeholder="17:20" oninput="updatePreview()">
-                            <span class="time-format">HH:MM</span>
-                        </div>
+                        <label>🌇 Shom</label>
+                        <input type="text" id="shom" required placeholder="17:20">
                     </div>
 
                     <div class="input-group">
-                        <label for="hufton">
-                            <i class="fas fa-moon"></i>
-                            Hufton
-                        </label>
-                        <div class="time-input">
-                            <input type="text" id="hufton" name="hufton" required 
-                                   placeholder="18:45" oninput="updatePreview()">
-                            <span class="time-format">HH:MM</span>
-                        </div>
+                        <label>🌙 Hufton</label>
+                        <input type="text" id="hufton" required placeholder="18:45">
                     </div>
                 </div>
 
-                <!-- IZOH -->
                 <div class="input-group">
-                    <label for="izoh">
-                        <i class="fas fa-comment-alt"></i>
-                        Izoh (ixtiyoriy)
-                    </label>
-                    <textarea id="izoh" name="izoh" 
-                              placeholder="Qo'shimcha ma'lumot yoki eslatma..."
-                              oninput="updatePreview()"></textarea>
+                    <label>💫 Izoh (ixtiyoriy)</label>
+                    <textarea id="izoh" placeholder="Qo'shimcha ma'lumot..."></textarea>
                 </div>
 
-                <!-- BUTTONS -->
-                <div class="button-group">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i>
-                        <span class="btn-text">Kanallarga Yuborish</span>
-                        <div class="loading-spinner" id="loadingSpinner"></div>
-                    </button>
-
-                    <a href="https://t.me/Abdulloh_Ummati_Muhammad" class="btn btn-secondary" target="_blank">
-                        <i class="fas fa-headset"></i>
-                        Admin bilan Bog'lanish
-                    </a>
-                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    📤 Kanallarga Yuborish
+                </button>
             </form>
 
-            <!-- QUOTE -->
             <div class="quote">
-                <p class="quote-text">
-                    Namozni ado etganingizdan so'ng, Allohni turgan, o'tirgan va yonboshlagan holingizda eslang. 
-                    Xotirjam bo'lganingizda namozni to'liq ado eting. Albatta, namoz mo'minlarga vaqtida farz qilingandir.
-                </p>
-                <p class="quote-reference">Niso surasi, 103-oyat</p>
+                <p>"Namozni ado etganingizdan so'ng Allohni eslang." (Niso 103)</p>
             </div>
         </main>
-
-        <!-- FOOTER -->
-        <footer class="footer">
-            <div class="footer-content">
-                <p class="footer-text">Islomxon Namoz Vaqti Bot</p>
-                <p class="footer-text">
-                    Yaratuvchi: 
-                    <a href="https://t.me/Abdulloh_Ummati_Muhammad" class="admin-link" target="_blank">
-                        Abdulloh Ummati Muhammad
-                    </a>
-                </p>
-            </div>
-        </footer>
     </div>
 
     <script>
-        // =============================================
-        // 🎯 TELEGRAM WEB APP INITIALIZATION
-        // =============================================
         const tg = window.Telegram.WebApp;
-        
-        // Telegram Web App ni sozlash
         tg.expand();
-        tg.enableClosingConfirmation();
-        tg.setHeaderColor('#43AB34');
-        tg.setBackgroundColor('#43AB34');
-        
-        console.log('✅ Telegram Web App initialized');
-        console.log('👤 User:', tg.initDataUnsafe.user);
 
-        // =============================================
-        // 🎨 PREVIEW FUNCTIONALITY
-        // =============================================
-        function updatePreview() {
-            const sana = document.getElementById('sana').value;
-            const bomdod = document.getElementById('bomdod').value;
-            const peshin = document.getElementById('peshin').value;
-            const asr = document.getElementById('asr').value;
-            const shom = document.getElementById('shom').value;
-            const hufton = document.getElementById('hufton').value;
-            const izoh = document.getElementById('izoh').value;
-
-            // Agar kamida bitta maydon to'ldirilgan bo'lsa
-            if (sana || bomdod || peshin || asr || shom || hufton) {
-                document.getElementById('previewSection').style.display = 'block';
-                
-                // Post formatlash
-                let preview = `🕌 Islomxon Jome Masjidi\n`;
-                preview += `📅 ${sana || 'Sana kiritilmagan'}\n\n`;
-                preview += `🕒 Namoz Vaqtlari:\n\n`;
-                preview += `🌅 Bomdod: ${bomdod || '__:__'}\n`;
-                preview += `☀️ Peshin: ${peshin || '__:__'}\n`;
-                preview += `🌤️ Asr: ${asr || '__:__'}\n`;
-                preview += `🌇 Shom: ${shom || '__:__'}\n`;
-                preview += `🌙 Hufton: ${hufton || '__:__'}\n\n`;
-                
-                if (izoh) {
-                    preview += `💫 Izoh: ${izoh}\n\n`;
-                }
-                
-                preview += `⏳ Namozni ado etganingizdan so'ng, Allohni turgan, o'tirgan va yonboshlagan holingizda eslang. Xotirjam bo'lganingizda namozni to'liq ado eting. Albatta, namoz mo'minlarga vaqtida farz qilingandir.\n\n`;
-                preview += `📖 Niso surasi, 103-oyat\n\n`;
-                preview += `👨‍💻 Bot: @Islomxon_Masjidi_Namoz_Vaqti_Bot`;
-                
-                document.getElementById('previewContent').textContent = preview;
-            } else {
-                document.getElementById('previewSection').style.display = 'none';
-            }
-        }
-
-        // =============================================
-        // 📅 CALENDAR FUNCTIONALITY
-        // =============================================
-        function showCalendar() {
-            const today = new Date();
-            const options = { day: 'numeric', month: 'long', year: 'numeric' };
-            const dateString = today.toLocaleDateString('uz-UZ', options);
-            document.getElementById('sana').value = dateString;
-            updatePreview();
-            
-            // Animation effect
-            const sanaInput = document.getElementById('sana');
-            sanaInput.style.transform = 'scale(1.05)';
-            setTimeout(() => {
-                sanaInput.style.transform = 'scale(1)';
-            }, 300);
-        }
-
-        // =============================================
-        // 📤 FORM SUBMISSION
-        // =============================================
         document.getElementById('prayerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const submitBtn = document.querySelector('.btn-primary');
-            const btnText = document.querySelector('.btn-text');
-            const spinner = document.getElementById('loadingSpinner');
+            const submitBtn = document.getElementById('submitBtn');
             const successMessage = document.getElementById('successMessage');
             const errorMessage = document.getElementById('errorMessage');
             
-            // Loading holati
-            btnText.style.display = 'none';
-            spinner.style.display = 'block';
             submitBtn.disabled = true;
+            submitBtn.textContent = 'Yuborilmoqda...';
             errorMessage.style.display = 'none';
-            successMessage.style.display = 'none';
 
             try {
-                // Ma'lumotlarni yig'ish
                 const formData = {
                     bomdod: document.getElementById('bomdod').value,
                     peshin: document.getElementById('peshin').value,
@@ -722,26 +224,20 @@
                     userId: tg.initDataUnsafe.user?.id || 5985723887
                 };
 
-                console.log('📤 Yuborilayotgan maʼlumotlar:', formData);
-
-                // Serverga so'rov yuborish
                 const response = await fetch('/submit-prayer-times', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    'X-User-ID': tg.initDataUnsafe.user?.id || 'unknown'
                     },
                     body: JSON.stringify(formData)
                 });
 
                 const result = await response.json();
-                console.log('📨 Server javobi:', result);
 
                 if (result.success) {
                     successMessage.style.display = 'block';
                     successMessage.textContent = '✅ ' + result.message;
                     
-                    // 3 soniyadan keyin WebApp ni yopish
                     setTimeout(() => {
                         tg.close();
                     }, 3000);
@@ -750,60 +246,18 @@
                 }
 
             } catch (error) {
-                console.error('❌ Xato:', error);
                 errorMessage.style.display = 'block';
                 errorMessage.textContent = '❌ ' + error.message;
-                
-                // Xato paytida vibratsiya (agar mavjud bo'lsa)
-                if (tg.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('heavy');
-                }
             } finally {
-                // Loading holatini olib tashlash
-                btnText.style.display = 'block';
-                spinner.style.display = 'none';
                 submitBtn.disabled = false;
+                submitBtn.textContent = '📤 Kanallarga Yuborish';
             }
         });
 
-        // =============================================
-        // 🎭 ANIMATIONS AND INITIALIZATION
-        // =============================================
-        document.addEventListener('DOMContentLoaded', () => {
-            // Elementlarga animatsiya qo'shish
-            const elements = document.querySelectorAll('.input-group, .button-group, .quote');
-            elements.forEach((el, index) => {
-                el.style.animationDelay = `${index * 0.1}s`;
-                el.classList.add('fade-in-up');
-            });
-            
-            // Boshlang'ich preview
-            updatePreview();
-            
-            // Bugungi sanani avtomatik kiritish
-            showCalendar();
-            
-            console.log('✅ Web App fully loaded');
-        });
-
-        // =============================================
-        // ⏰ TIME VALIDATION
-        // =============================================
-        function validateTime(input) {
-            const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
-            if (input.value && !timeRegex.test(input.value)) {
-                input.style.borderColor = 'var(--secondary)';
-                input.style.background = '#FFF5F5';
-            } else {
-                input.style.borderColor = 'var(--border)';
-                input.style.background = 'var(--bg)';
-            }
-        }
-
-        // Time inputlarni tekshirish
-        document.querySelectorAll('.time-input input').forEach(input => {
-            input.addEventListener('blur', () => validateTime(input));
-        });
+        // Bugungi sanani avtomatik kiritish
+        const today = new Date();
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        document.getElementById('sana').value = today.toLocaleDateString('uz-UZ', options);
     </script>
 </body>
 </html>
