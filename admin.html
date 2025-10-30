@@ -46,6 +46,7 @@
             display: flex;
             background: #2D7D32;
             padding: 0;
+            flex-wrap: wrap;
         }
 
         .nav-item {
@@ -56,6 +57,7 @@
             cursor: pointer;
             border-bottom: 3px solid transparent;
             transition: all 0.3s;
+            min-width: 120px;
         }
 
         .nav-item.active {
@@ -108,6 +110,8 @@
             border-radius: 12px;
             padding: 15px;
             border: 2px solid #E8F5E8;
+            max-height: 300px;
+            overflow-y: auto;
         }
 
         .user-item {
@@ -134,6 +138,7 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
+            margin: 5px;
         }
 
         .btn:hover {
@@ -156,12 +161,15 @@
             color: #1B5E20;
         }
 
-        .form-group input, .form-group textarea {
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
             width: 100%;
             padding: 12px;
             border: 2px solid #E8F5E8;
             border-radius: 8px;
             font-size: 14px;
+            background: white;
         }
 
         .message-item {
@@ -176,6 +184,46 @@
             font-size: 12px;
             color: #666;
             margin-top: 8px;
+        }
+
+        .success-message {
+            background: #43AB34;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message {
+            background: #ff6b6b;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav {
+                flex-direction: column;
+            }
+            
+            .nav-item {
+                min-width: auto;
+            }
         }
     </style>
 </head>
@@ -194,6 +242,10 @@
         </nav>
 
         <div class="content">
+            <!-- Xabar ko'rsatish -->
+            <div id="successMessage" class="success-message"></div>
+            <div id="errorMessage" class="error-message"></div>
+
             <!-- Statistika -->
             <div id="stats" class="tab-content active">
                 <h2>📊 Bot Statistika</h2>
@@ -211,14 +263,14 @@
                         <div class="stat-label">Faol Foydalanuvchilar</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number" id="channels">1</div>
+                        <div class="stat-number" id="channels">0</div>
                         <div class="stat-label">Ulangan Kanallar</div>
                     </div>
                 </div>
                 
                 <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn" onclick="refreshStats()">🔄 Yangilash</button>
-                    <a href="/webapp.html" class="btn btn-secondary" style="margin-left: 10px;">📱 Web App</a>
+                    <button class="btn" onclick="refreshStats()">🔄 Statistika Yangilash</button>
+                    <a href="/webapp.html" class="btn btn-secondary">📱 Web App ochish</a>
                 </div>
             </div>
 
@@ -226,23 +278,19 @@
             <div id="users" class="tab-content">
                 <h2>👥 Foydalanuvchilar Ro'yxati</h2>
                 <div class="user-list" id="usersList">
-                    <div class="user-item">
-                        <div>
-                            <strong>👤 Foydalanuvchi</strong>
-                            <div class="message-meta">ID: 5985723887 | Admin</div>
-                        </div>
-                        <div>
-                            <span style="color: #43AB34;">✅ Faol</span>
-                        </div>
-                    </div>
+                    <div class="loading">Yuklanmoqda...</div>
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button class="btn" onclick="loadUsers()">🔄 Yangilash</button>
                 </div>
             </div>
 
             <!-- Xabarlar -->
             <div id="messages" class="tab-content">
                 <h2>📨 Xabarlarni Boshqarish</h2>
+                
                 <div class="form-group">
-                    <label>📝 Yangi Xabar Yuborish:</label>
+                    <label>📝 Yangi Xabar Yuborish (barcha foydalanuvchilarga):</label>
                     <textarea id="newMessage" rows="4" placeholder="Xabar matnini kiriting..."></textarea>
                 </div>
                 <button class="btn" onclick="sendBroadcast()">📤 Barchaga Yuborish</button>
@@ -252,8 +300,8 @@
                     <div id="messagesList">
                         <div class="message-item">
                             <strong>🕌 Namoz Vaqtlari</strong>
-                            <p>20-dekabr, 2024 yil namoz vaqtlari...</p>
-                            <div class="message-meta">📅 20.12.2024 | ✅ Yuborildi</div>
+                            <p>Bot yangilandi - yangi admin paneli qo'shildi!</p>
+                            <div class="message-meta">📅 Bugun | ✅ Yuborildi</div>
                         </div>
                     </div>
                 </div>
@@ -280,7 +328,31 @@
                     </div>
                 </div>
 
-                <button class="btn" onclick="saveSettings()">💾 Saqlash</button>
+                <div class="form-group">
+                    <label>📊 Avtomatik yangilash:</label>
+                    <div>
+                        <input type="checkbox" id="autoRefresh" checked>
+                        <label for="autoRefresh">Statistika avtomatik yangilansin</label>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="saveSettings()">💾 Sozlamalarni Saqlash</button>
+                
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #E8F5E8;">
+                    <h3>🔧 Bot Ma'lumotlari</h3>
+                    <div class="user-item">
+                        <div>Bot Nomi:</div>
+                        <div>Islomxon Namoz Vaqti Bot</div>
+                    </div>
+                    <div class="user-item">
+                        <div>Bot Username:</div>
+                        <div>@Islomxon_Masjidi_Namoz_Vaqti_Bot</div>
+                    </div>
+                    <div class="user-item">
+                        <div>Server Holati:</div>
+                        <div id="serverStatus">✅ Faol</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -301,14 +373,84 @@
             // Tanlangan tab va nav itemni ko'rsatish
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
+            
+            // Tab o'zgarganda ma'lumotlarni yangilash
+            if (tabName === 'stats') {
+                refreshStats();
+            } else if (tabName === 'users') {
+                loadUsers();
+            }
+        }
+
+        // Xabar ko'rsatish
+        function showMessage(message, type = 'success') {
+            const messageDiv = type === 'success' ? 
+                document.getElementById('successMessage') : 
+                document.getElementById('errorMessage');
+            
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
         }
 
         // Statistika yangilash
-        function refreshStats() {
-            document.getElementById('totalUsers').textContent = '125';
-            document.getElementById('totalMessages').textContent = '47';
-            document.getElementById('activeUsers').textContent = '89';
-            alert('📊 Statistika yangilandi!');
+        async function refreshStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const stats = await response.json();
+                
+                document.getElementById('totalUsers').textContent = stats.totalUsers;
+                document.getElementById('totalMessages').textContent = stats.totalMessages;
+                document.getElementById('activeUsers').textContent = stats.activeUsers;
+                document.getElementById('channels').textContent = stats.channels;
+                
+                console.log('Statistika yangilandi:', stats);
+                showMessage('📊 Statistika yangilandi!');
+            } catch (error) {
+                console.error('Statistika yangilashda xato:', error);
+                showMessage('❌ Statistika yangilashda xato', 'error');
+            }
+        }
+
+        // Foydalanuvchilarni yuklash
+        async function loadUsers() {
+            const usersList = document.getElementById('usersList');
+            usersList.innerHTML = '<div class="loading">Yuklanmoqda...</div>';
+            
+            try {
+                const response = await fetch('/api/users');
+                const users = await response.json();
+                
+                if (users.length === 0) {
+                    usersList.innerHTML = '<div class="loading">🤷‍♂️ Foydalanuvchilar topilmadi</div>';
+                    return;
+                }
+                
+                usersList.innerHTML = '';
+                users.forEach(user => {
+                    const userItem = document.createElement('div');
+                    userItem.className = 'user-item';
+                    userItem.innerHTML = `
+                        <div>
+                            <strong>👤 ${user.name || 'Foydalanuvchi'}</strong>
+                            <div class="message-meta">ID: ${user.id} | ${user.isAdmin ? '👑 Admin' : '👤 User'}</div>
+                        </div>
+                        <div>
+                            <span style="color: #43AB34;">✅ ${user.status || 'Faol'}</span>
+                        </div>
+                    `;
+                    usersList.appendChild(userItem);
+                });
+                
+                showMessage(`👥 ${users.length} ta foydalanuvchi yuklandi`);
+            } catch (error) {
+                console.error('Foydalanuvchilarni yuklashda xato:', error);
+                usersList.innerHTML = '<div class="loading">❌ Yuklashda xato</div>';
+                showMessage('❌ Foydalanuvchilarni yuklashda xato', 'error');
+            }
         }
 
         // Mavzu o'zgartirish
@@ -322,30 +464,67 @@
             } else if (theme === 'dark') {
                 body.style.background = 'linear-gradient(135deg, #2d3436 0%, #000000 100%)';
             }
+            
+            showMessage('🎨 Mavzu o\'zgartirildi!');
         }
 
         // Broadcast xabar yuborish
         function sendBroadcast() {
             const message = document.getElementById('newMessage').value;
             if (!message) {
-                alert('📝 Iltimos, xabar matnini kiriting!');
+                showMessage('📝 Iltimos, xabar matnini kiriting!', 'error');
                 return;
             }
             
             if (confirm(`📤 "${message}" xabarini barcha foydalanuvchilarga yuborishni tasdiqlaysizmi?`)) {
-                alert('✅ Xabar yuborildi!');
+                // Bu yerda serverga so'rov yuboriladi
+                showMessage('✅ Xabar yuborildi! (Test rejim)');
                 document.getElementById('newMessage').value = '';
+                
+                // Xabarlar ro'yxatiga qo'shish
+                const messagesList = document.getElementById('messagesList');
+                const newMessage = document.createElement('div');
+                newMessage.className = 'message-item';
+                newMessage.innerHTML = `
+                    <strong>📢 Broadcast Xabar</strong>
+                    <p>${message}</p>
+                    <div class="message-meta">📅 ${new Date().toLocaleString('uz-UZ')} | ✅ Yuborildi</div>
+                `;
+                messagesList.insertBefore(newMessage, messagesList.firstChild);
             }
         }
 
         // Sozlamalarni saqlash
         function saveSettings() {
-            alert('✅ Sozlamalar muvaffaqiyatli saqlandi!');
+            const notifications = document.getElementById('notifications').checked;
+            const autoRefresh = document.getElementById('autoRefresh').checked;
+            const theme = document.getElementById('themeSelect').value;
+            
+            // Bu yerda sozlamalarni serverga saqlash kodi bo'ladi
+            console.log('Sozlamalar saqlanmoqda:', { notifications, autoRefresh, theme });
+            
+            showMessage('✅ Sozlamalar muvaffaqiyatli saqlandi!');
+            
+            // Avtomatik yangilash
+            if (autoRefresh) {
+                setInterval(refreshStats, 30000); // 30 soniyada bir
+            }
         }
 
         // Sahifa yuklanganda
         document.addEventListener('DOMContentLoaded', function() {
             refreshStats();
+            loadUsers();
+            
+            // Server holatini tekshirish
+            fetch('/ping')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('serverStatus').textContent = '✅ Faol';
+                })
+                .catch(error => {
+                    document.getElementById('serverStatus').textContent = '❌ Xato';
+                });
         });
     </script>
 </body>
