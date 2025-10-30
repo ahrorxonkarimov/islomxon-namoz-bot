@@ -6,14 +6,14 @@ const app = express();
 const PORT = process.env.PORT || 10000;
 const BOT_TOKEN = process.env.BOT_TOKEN || '8353179858:AAFMgCR5KLWOh7-4Tid-A4x1RAwPd3-Y9xE';
 
-// ✅ YANGILANGAN ADMINLAR RO'YXATI
 const ADMIN_IDS = [7894421569, 5985723887, 382697989];
 const CHANNELS = ['@Islomxon_masjidi'];
 
-// ✅ POLLING YOQILGAN HOLATDA
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
 app.use(express.json());
+
+// ==================== ROUTELAR ====================
 
 // ASOSIY SAHIFA
 app.get('/', (req, res) => {
@@ -36,25 +36,54 @@ app.get('/', (req, res) => {
           border-radius: 15px;
           backdrop-filter: blur(10px);
         }
+        .links a {
+          display: block;
+          margin: 10px 0;
+          padding: 15px;
+          background: rgba(255,255,255,0.2);
+          border-radius: 8px;
+          color: white;
+          text-decoration: none;
+          transition: all 0.3s ease;
+        }
+        .links a:hover {
+          background: rgba(255,255,255,0.3);
+          transform: translateY(-2px);
+        }
       </style>
     </head>
     <body>
       <div class="container">
         <h1>🕌 Islomxon Namoz Vaqti Bot</h1>
         <p>✅ Bot ishlayapti</p>
-        <p>👥 Adminlar: ${ADMIN_IDS.join(', ')}</p>
-        <p><a href="/webapp.html" style="color: #ffd700;">📱 Web App ni ochish</a></p>
+        <div class="links">
+          <a href="/webapp.html">📱 Web App - Namoz Vaqtlarini Yuborish</a>
+          <a href="/admin">🛠️ Admin Panel - Boshqaruv</a>
+        </div>
+        <p style="margin-top: 20px;">👥 Adminlar: ${ADMIN_IDS.join(', ')}</p>
       </div>
     </body>
     </html>
   `);
 });
 
+// WEB APP SAHIFASI
+app.get('/webapp.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'webapp.html'));
+});
+
+// ADMIN PANEL SAHIFASI
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// ==================== BOT FUNKSIYALARI ====================
+
 function isAdmin(userId) {
   return ADMIN_IDS.includes(Number(userId));
 }
 
-// ✅ SODDA /start KOMANDASI
+// /start komandasi
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
   const userId = msg.from.id;
@@ -65,14 +94,22 @@ bot.onText(/\/start/, (msg) => {
   if (isAdmin(userId)) {
     console.log(`✅ ${userId} admin sifatida tanishdi`);
     
-    bot.sendMessage(chatId, `Assalomu alaykum ${userName}! 👋\n\n🕌 Islomxon Jome Masjidi botiga xush kelibsiz!\n\n📱 Namoz vaqtlarini yuborish uchun quyidagi tugmani bosing:`, {
+    bot.sendMessage(chatId, `Assalomu alaykum ${userName}! 👋\n\n🕌 *Islomxon Jome Masjidi* botiga xush kelibsiz!\n\nQuyidagi tugmalardan foydalaning:`, {
       reply_markup: {
-        inline_keyboard: [[
-          {
-            text: '🕌 Namoz Vaqtlarini Yuborish',
-            web_app: { url: 'https://islomxon-namoz-bot.onrender.com/webapp.html' }
-          }
-        ]]
+        inline_keyboard: [
+          [
+            {
+              text: '📱 Namoz Vaqtlarini Yuborish',
+              web_app: { url: 'https://islomxon-namoz-bot.onrender.com/webapp.html' }
+            }
+          ],
+          [
+            {
+              text: '🛠️ Admin Panel',
+              web_app: { url: 'https://islomxon-namoz-bot.onrender.com/admin' }
+            }
+          ]
+        ]
       },
       parse_mode: 'Markdown'
     });
@@ -83,7 +120,7 @@ bot.onText(/\/start/, (msg) => {
   }
 });
 
-// ✅ TEST KOMANDASI
+// /test komandasi
 bot.onText(/\/test/, (msg) => {
   const chatId = msg.chat.id;
   const userId = msg.from.id;
@@ -91,7 +128,7 @@ bot.onText(/\/test/, (msg) => {
   bot.sendMessage(chatId, `✅ Bot ishlayapti!\n\nSizning ID: ${userId}\nAdminmi: ${isAdmin(userId) ? 'HA' : 'YO\'Q'}`);
 });
 
-// ✅ /id KOMANDASI
+// /id komandasi
 bot.onText(/\/id/, (msg) => {
   const chatId = msg.chat.id;
   const userId = msg.from.id;
@@ -140,11 +177,6 @@ app.post('/submit-prayer-times', express.json(), async (req, res) => {
   }
 });
 
-// Web App sahifasi
-app.get('/webapp.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'webapp.html'));
-});
-
 // Xato boshqaruvi
 bot.on('polling_error', (error) => {
   console.log('❌ Polling xatosi:', error.message);
@@ -158,8 +190,9 @@ bot.on('error', (error) => {
 app.listen(PORT, () => {
   console.log(`\n🎉 ==========================================`);
   console.log(`✅ Server ${PORT}-portda ishga tushdi`);
-  console.log(`🤖 Bot polling rejimida ishlayapti`);
-  console.log(`🌐 WebApp: https://islomxon-namoz-bot.onrender.com/webapp.html`);
+  console.log(`🌐 Asosiy sahifa: https://islomxon-namoz-bot.onrender.com`);
+  console.log(`📱 WebApp: https://islomxon-namoz-bot.onrender.com/webapp.html`);
+  console.log(`🛠️ Admin Panel: https://islomxon-namoz-bot.onrender.com/admin`);
   console.log(`👥 Adminlar: ${ADMIN_IDS.join(', ')}`);
   console.log(`🎉 ==========================================\n`);
 });
