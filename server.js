@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 10000;
 const BOT_TOKEN = process.env.BOT_TOKEN || '8353179858:AAFMgCR5KLWOh7-4Tid-A4x1RAwPd3-Y9xE';
-const ADMIN_IDS = [7894421569, 5985723887, 382697989];
+const ADMIN_IDS = [7894421569, 382697989];
 const CHANNELS = ['@Islomxon_masjidi']; // ✅ TO'G'RI USERNAME
 
 const bot = new TelegramBot(BOT_TOKEN);
