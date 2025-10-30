@@ -5,91 +5,57 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 10000;
 const BOT_TOKEN = process.env.BOT_TOKEN || '8353179858:AAFMgCR5KLWOh7-4Tid-A4x1RAwPd3-Y9xE';
-
-// ✅ ADMINLAR RO'YXATI - SIZ VA YANGI ADMIN
-const ADMIN_IDS = [5985723887, 382697989]; // Siz + yangi admin
-
-// ✅ KANALLAR RO'YXATI
+const ADMIN_IDS = [5985723887, 382697989];
 const CHANNELS = ['@Islomxon_masjidi'];
 
 const bot = new TelegramBot(BOT_TOKEN);
 
 app.use(express.json());
 
-// ✅ PING - BOTNI USHLAB TURISH
+// PING
 app.get('/ping', (req, res) => {
     console.log('🏓 Ping qabul qilindi');
-    res.json({ status: 'ok', time: new Date().toLocaleString('uz-UZ') });
+    res.json({ status: 'ok' });
 });
 
-// 🏠 ASOSIY SAHIFA
+// ASOSIY SAHIFA
 app.get('/', (req, res) => {
-    res.send(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Islomxon Namoz Vaqti Bot</title>
-            <style>
-                body { 
-                    font-family: Arial, sans-serif; 
-                    text-align: center; 
-                    padding: 50px; 
-                    background: linear-gradient(135deg, #43AB34 0%, #2D7D32 100%);
-                    color: white;
-                }
-                .container {
-                    background: rgba(255,255,255,0.1);
-                    padding: 30px;
-                    border-radius: 15px;
-                    backdrop-filter: blur(10px);
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1>🕌 Islomxon Namoz Vaqti Bot</h1>
-                <p>✅ Bot faol holatda</p>
-                <p>🕒 ${new Date().toLocaleString('uz-UZ')}</p>
-                <p>👥 Adminlar: ${ADMIN_IDS.length} ta</p>
-                <p><a href="/webapp.html" style="color: #ffd700;">Web App ni ochish</a></p>
-            </div>
-        </body>
-        </html>
-    `);
+    res.send('Bot ishlamoqda');
 });
 
-// 🌐 WEBHOOK
+// WEBHOOK
 app.post('/webhook', (req, res) => {
+    console.log('📨 Webhook so\'rov keldi');
     bot.processUpdate(req.body);
     res.sendStatus(200);
 });
 
-// 📱 WEB APP SAHIFASI
+// WEB APP
 app.get('/webapp.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'webapp.html'));
 });
 
-// 🔐 ADMIN TEKSHIRISH
+// ADMIN TEKSHIRISH
 function isAdmin(userId) {
     return ADMIN_IDS.includes(parseInt(userId));
 }
 
-// 📤 KANALGA XABAR YUBORISH - ISHLAYDI!
+// KANALGA XABAR YUBORISH
 async function sendToChannels(message) {
     const results = [];
     
     for (const channel of CHANNELS) {
         try {
-            console.log(`📤 "${channel}" kanaliga xabar yuborilmoqda...`);
+            console.log(`📤 Kanal: ${channel} - Xabar yuborilmoqda...`);
             
-            // TO'G'RI USUL: Xabarni yuborish
+            // Xabarni yuborish
             const result = await bot.sendMessage(channel, message);
-            console.log(`✅ Xabar "${channel}" kanaliga MUVAFFAQIYATLI YUBORILDI!`);
+            console.log(`✅ Xabar YUBORILDI! Message ID: ${result.message_id}`);
             
             results.push({ channel, success: true });
             
         } catch (error) {
-            console.error(`❌ "${channel}" kanaliga xabar yuborishda xato:`, error.message);
+            console.error(`❌ XATO: ${channel} - ${error.message}`);
             results.push({ channel, success: false, error: error.message });
         }
     }
@@ -97,7 +63,7 @@ async function sendToChannels(message) {
     return results;
 }
 
-// 🎯 /start KOMANDASI
+// /start KOMANDASI
 bot.onText(/\/start/, (msg) => {
     const chatId = msg.chat.id;
     const userId = msg.from.id;
@@ -117,25 +83,36 @@ bot.onText(/\/start/, (msg) => {
         ]]
     };
 
-    bot.sendMessage(chatId, `Assalomu alaykum! *Islomxon Namoz Vaqti Bot* ga xush kelibsiz!\\n\\nNamoz vaqtlarini yuborish uchun quyidagi tugmani bosing:`, {
-        reply_markup: keyboard,
-        parse_mode: 'Markdown'
+    bot.sendMessage(chatId, `Assalomu alaykum! Botga xush kelibsiz!`, {
+        reply_markup: keyboard
     });
 });
 
-// 📨 WEB APP DAN MA'LUMOT QABUL QILISH
+// WEB APP DAN MA'LUMOT QABUL QILISH
 app.post('/submit-prayer-times', express.json(), async (req, res) => {
     try {
-        console.log('📨 WebApp so\'rov keldi:', req.body);
+        console.log('📨 📨 📨 WEBAPP SO\'ROV KELDI!');
+        console.log('Ma\'lumotlar:', req.body);
 
         const { bomdod, peshin, asr, shom, hufton, sana, izoh, userId } = req.body;
 
+        // User ID borligini tekshirish
+        if (!userId) {
+            console.log('❌ User ID yo\'q');
+            return res.status(400).json({ success: false, error: 'User ID topilmadi' });
+        }
+
+        console.log(`👤 User ID: ${userId}`);
+
         // Admin tekshirish
         if (!isAdmin(userId)) {
+            console.log(`❌ User ${userId} admin emas`);
             return res.status(403).json({ success: false, error: 'Faqat admin' });
         }
 
-        // XABAR FORMATLASH
+        console.log(`✅ User ${userId} admin`);
+
+        // XABAR YARATISH
         const message = `🕌 Islomxon Jome Masjidi
 📅 ${sana}
 
@@ -147,14 +124,17 @@ app.post('/submit-prayer-times', express.json(), async (req, res) => {
 🌇 Shom: ${shom}
 🌙 Hufton: ${hufton}
 
-${izoh ? `💫 Izoh: ${izoh}\\n\\n` : ''}"Namozni ado etganingizdan so'ng Allohni eslang." (Niso 103)`;
+${izoh ? `💫 Izoh: ${izoh}\n\n` : ''}"Namozni ado etganingizdan so'ng Allohni eslang." (Niso 103)`;
 
         console.log('📝 Xabar tayyor:', message);
 
         // KANALLARGA YUBORISH
+        console.log('🚀 Kanallarga yuborish boshlandi...');
         const results = await sendToChannels(message);
 
         const successCount = results.filter(r => r.success).length;
+
+        console.log(`📊 Natija: ${successCount} kanalga yuborildi`);
 
         res.json({
             success: successCount > 0,
@@ -163,15 +143,12 @@ ${izoh ? `💫 Izoh: ${izoh}\\n\\n` : ''}"Namozni ado etganingizdan so'ng Allohn
 
     } catch (error) {
         console.error('❌ Xato:', error);
-        res.status(500).json({ success: false, error: `Server xatosi: ${error.message}` });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
-// 🎉 SERVERNI ISHGA TUSHIRISH
+// SERVER
 app.listen(PORT, () => {
-    console.log(`\n🎉 ISLOMXON BOT ISHGA TUSHDI!`);
-    console.log(`📍 Port: ${PORT}`);
-    console.log(`👥 Adminlar: ${ADMIN_IDS.join(', ')}`);
-    console.log(`📢 Kanallar: ${CHANNELS.join(', ')}`);
-    console.log(`🕒 Vaqt: ${new Date().toLocaleString('uz-UZ')}\n`);
+    console.log(`✅ Server ${PORT}-portda ishga tushdi`);
+    console.log(`👤 Adminlar: ${ADMIN_IDS.join(', ')}`);
 });
