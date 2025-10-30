@@ -4,235 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Islomxon Namoz Vaqtlari</title>
+    <!-- CSS qismi o'zgarmadi, oldingi kabi -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #43AB34 0%, #2D7D32 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #2d3436;
-        }
-
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .header {
-            background: linear-gradient(135deg, #43AB34, #2D7D32);
-            padding: 30px 20px;
-            text-align: center;
-            color: white;
-            border-bottom: 3px solid #1B5E20;
-        }
-
-        .title {
-            font-size: 26px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .subtitle {
-            font-size: 16px;
-            opacity: 0.9;
-            font-weight: 500;
-        }
-
-        .main {
-            padding: 30px 25px;
-        }
-
-        .form {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .input-group label {
-            font-weight: 600;
-            color: #1B5E20;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .input-group input,
-        .input-group textarea {
-            padding: 16px;
-            border: 2px solid #E8F5E8;
-            border-radius: 15px;
-            background: #F8FFF8;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            outline: none;
-            font-family: inherit;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .input-group input:focus,
-        .input-group textarea:focus {
-            border-color: #43AB34;
-            background: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(67, 171, 52, 0.3);
-        }
-
-        .input-group textarea {
-            resize: vertical;
-            min-height: 90px;
-        }
-
-        .prayer-times {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        @media (max-width: 480px) {
-            .prayer-times {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .submit-btn {
-            background: linear-gradient(135deg, #43AB34, #2D7D32);
-            color: white;
-            border: none;
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            margin-top: 15px;
-            box-shadow: 0 6px 20px rgba(67, 171, 52, 0.4);
-            border: 2px solid rgba(255,255,255,0.2);
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(67, 171, 52, 0.6);
-        }
-
-        .submit-btn:active {
-            transform: translateY(-1px);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .loading-spinner {
-            width: 24px;
-            height: 24px;
-            border: 3px solid transparent;
-            border-top: 3px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-            display: none;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .quote {
-            margin-top: 35px;
-            padding: 25px;
-            background: linear-gradient(135deg, #E8F5E8, #C8E6C9);
-            border-radius: 15px;
-            text-align: center;
-            font-style: italic;
-            color: #1B5E20;
-            border-left: 5px solid #43AB34;
-            font-size: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .footer {
-            background: linear-gradient(135deg, #2D7D32, #1B5E20);
-            padding: 20px;
-            text-align: center;
-            color: white;
-            font-size: 14px;
-            border-top: 2px solid rgba(255,255,255,0.1);
-        }
-
-        /* Animatsiyalar */
-        .fade-in-up {
-            animation: fadeInUp 0.6s ease forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .success-message {
-            background: linear-gradient(135deg, #43AB34, #2D7D32);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 25px;
-            display: none;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(67, 171, 52, 0.4);
-        }
-
-        .preview-section {
-            background: #F1F8E9;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            border: 2px dashed #43AB34;
-            display: none;
-        }
-
-        .preview-title {
-            font-weight: 600;
-            color: #1B5E20;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .preview-content {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 14px;
-            line-height: 1.6;
-            white-space: pre-line;
-        }
+        /* Oldingi CSS kodi bu yerda */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #43AB34 0%, #2D7D32 100%); min-height: 100vh; padding: 20px; color: #2d3436; }
+        .container { max-width: 500px; margin: 0 auto; background: rgba(255, 255, 255, 0.95); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); border: 2px solid rgba(255, 255, 255, 0.3); }
+        .header { background: linear-gradient(135deg, #43AB34, #2D7D32); padding: 30px 20px; text-align: center; color: white; border-bottom: 3px solid #1B5E20; }
+        .title { font-size: 26px; font-weight: bold; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); }
+        .subtitle { font-size: 16px; opacity: 0.9; font-weight: 500; }
+        .main { padding: 30px 25px; }
+        .form { display: flex; flex-direction: column; gap: 25px; }
+        .input-group { display: flex; flex-direction: column; gap: 10px; }
+        .input-group label { font-weight: 600; color: #1B5E20; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+        .input-group input, .input-group textarea { padding: 16px; border: 2px solid #E8F5E8; border-radius: 15px; background: #F8FFF8; font-size: 16px; transition: all 0.3s ease; outline: none; font-family: inherit; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .input-group input:focus, .input-group textarea:focus { border-color: #43AB34; background: white; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(67, 171, 52, 0.3); }
+        .input-group textarea { resize: vertical; min-height: 90px; }
+        .prayer-times { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 480px) { .prayer-times { grid-template-columns: 1fr; } }
+        .submit-btn { background: linear-gradient(135deg, #43AB34, #2D7D32); color: white; border: none; padding: 20px; border-radius: 15px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; margin-top: 15px; box-shadow: 0 6px 20px rgba(67, 171, 52, 0.4); border: 2px solid rgba(255,255,255,0.2); }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(67, 171, 52, 0.6); }
+        .submit-btn:active { transform: translateY(-1px); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .loading-spinner { width: 24px; height: 24px; border: 3px solid transparent; border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .quote { margin-top: 35px; padding: 25px; background: linear-gradient(135deg, #E8F5E8, #C8E6C9); border-radius: 15px; text-align: center; font-style: italic; color: #1B5E20; border-left: 5px solid #43AB34; font-size: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .footer { background: linear-gradient(135deg, #2D7D32, #1B5E20); padding: 20px; text-align: center; color: white; font-size: 14px; border-top: 2px solid rgba(255,255,255,0.1); }
+        .fade-in-up { animation: fadeInUp 0.6s ease forwards; opacity: 0; transform: translateY(20px); }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .success-message { background: linear-gradient(135deg, #43AB34, #2D7D32); color: white; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 25px; display: none; font-weight: 600; box-shadow: 0 4px 15px rgba(67, 171, 52, 0.4); }
+        .preview-section { background: #F1F8E9; padding: 20px; border-radius: 15px; margin-bottom: 25px; border: 2px dashed #43AB34; display: none; }
+        .preview-title { font-weight: 600; color: #1B5E20; margin-bottom: 15px; text-align: center; }
+        .preview-content { background: white; padding: 15px; border-radius: 10px; font-size: 14px; line-height: 1.6; white-space: pre-line; }
+        .error-message { background: #ff6b6b; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: none; }
     </style>
 </head>
 <body>
@@ -243,9 +47,8 @@
         </header>
 
         <main class="main">
-            <div id="successMessage" class="success-message">
-                ✅ Muvaffaqiyatli yuborildi!
-            </div>
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
 
             <div id="previewSection" class="preview-section">
                 <div class="preview-title">📋 Post Ko'rinishi:</div>
@@ -316,9 +119,17 @@
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.enableClosingConfirmation();
+        // Telegram Web App initializatsiyasi
+        let tg;
+        try {
+            tg = window.Telegram.WebApp;
+            tg.expand();
+            tg.enableClosingConfirmation();
+            console.log('✅ Telegram Web App initialized');
+        } catch (error) {
+            console.error('❌ Telegram Web App error:', error);
+            showError('Telegram Web App ishlamayapti. Iltimos, Telegram ichida oching.');
+        }
 
         // Post ko'rinishini yangilash
         function updatePreview() {
@@ -354,6 +165,16 @@
             }
         }
 
+        // Xatolik ko'rsatish
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
         // Form yuborish
         document.getElementById('prayerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -362,11 +183,13 @@
             const btnText = document.querySelector('.btn-text');
             const spinner = document.getElementById('loadingSpinner');
             const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
             
             // Loading holati
             btnText.style.display = 'none';
             spinner.style.display = 'block';
             submitBtn.disabled = true;
+            errorMessage.style.display = 'none';
 
             try {
                 const formData = {
@@ -377,10 +200,10 @@
                     hufton: document.getElementById('hufton').value,
                     sana: document.getElementById('sana').value,
                     izoh: document.getElementById('izoh').value,
-                    userId: tg.initDataUnsafe.user?.id
+                    userId: tg?.initDataUnsafe?.user?.id || 5985723887
                 };
 
-                console.log('Yuborilayotgan maʼlumotlar:', formData);
+                console.log('📤 Yuborilayotgan maʼlumotlar:', formData);
 
                 const response = await fetch('/submit-prayer-times', {
                     method: 'POST',
@@ -391,7 +214,7 @@
                 });
 
                 const result = await response.json();
-                console.log('Server javobi:', result);
+                console.log('📨 Server javobi:', result);
 
                 if (result.success) {
                     successMessage.style.display = 'block';
@@ -399,15 +222,17 @@
                     
                     // 3 soniyadan keyin yopish
                     setTimeout(() => {
-                        tg.close();
+                        if (tg) {
+                            tg.close();
+                        }
                     }, 3000);
                 } else {
                     throw new Error(result.error);
                 }
 
             } catch (error) {
-                console.error('Xato:', error);
-                alert('Xato: ' + error.message);
+                console.error('❌ Xato:', error);
+                showError('Xato: ' + error.message);
             } finally {
                 btnText.style.display = 'block';
                 spinner.style.display = 'none';
@@ -425,6 +250,7 @@
             
             // Boshlang'ich preview
             updatePreview();
+            console.log('✅ Web App loaded successfully');
         });
     </script>
 </body>
