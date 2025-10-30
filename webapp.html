@@ -50,17 +50,6 @@
             font-weight: 500;
         }
 
-        .creator {
-            font-size: 12px;
-            margin-top: 8px;
-            opacity: 0.8;
-        }
-
-        .creator a {
-            color: #FFD700;
-            text-decoration: none;
-        }
-
         .main {
             padding: 25px 20px;
         }
@@ -144,6 +133,28 @@
             box-shadow: 0 6px 20px rgba(67, 171, 52, 0.6);
         }
 
+        .admin-btn {
+            background: linear-gradient(135deg, #FF6B6B, #EE5A24);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
         .loading-spinner {
             width: 20px;
             height: 20px;
@@ -182,11 +193,6 @@
             border-top: 2px solid rgba(255,255,255,0.1);
         }
 
-        .footer a {
-            color: #FFD700;
-            text-decoration: none;
-        }
-
         .success-message {
             background: linear-gradient(135deg, #43AB34, #2D7D32);
             color: white;
@@ -223,6 +229,12 @@
             line-height: 1.5;
             white-space: pre-line;
         }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
@@ -230,7 +242,6 @@
         <header class="header">
             <h1 class="title">🕌 Islomxon Jome Masjidi</h1>
             <p class="subtitle">Namoz Vaqtlari Kiritish</p>
-            <p class="creator">Bot yaratuvchi: <a href="https://t.me/Abdulloh_Ummati_Muhammad" target="_blank">Abdulloh Ummati Muhammad</a></p>
         </header>
 
         <main class="main">
@@ -288,19 +299,25 @@
                               oninput="updatePreview()"></textarea>
                 </div>
 
-                <button type="submit" class="submit-btn">
-                    <span class="btn-text">📤 Kanallarga Yuborish</span>
-                    <div class="loading-spinner" id="loadingSpinner"></div>
-                </button>
+                <div class="button-group">
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">📤 Kanallarga Yuborish</span>
+                        <div class="loading-spinner" id="loadingSpinner"></div>
+                    </button>
+
+                    <a href="https://t.me/Abdulloh_Ummati_Muhammad" class="admin-btn" target="_blank">
+                        👨‍💻 Admin bilan Bog'lanish
+                    </a>
+                </div>
             </form>
 
             <div class="quote">
-                <p>⏳ Namozni ado etganingizdan so'ng, Allohni turgan, o'tirgan va yonboshlagan holingizda eslang. Xotirjam bo'lganingizda namozni to'liq ado eting. Albatta, namoz mo'minlarga vaqtida farz qilingandir. (Niso surasi 103-oyat)</p>
+                <p>"Namozni ado etganingizdan so'ng Allohni eslang." (Niso 103)</p>
             </div>
         </main>
 
         <footer class="footer">
-            <p>Islomxon Namoz Vaqti Bot • <a href="https://t.me/Abdulloh_Ummati_Muhammad">@Abdulloh_Ummati_Muhammad</a></p>
+            <p>Islomxon Namoz Vaqti Bot</p>
         </footer>
     </div>
 
@@ -334,8 +351,7 @@
                     preview += `💫 Izoh: ${izoh}\n\n`;
                 }
                 
-                preview += `⏳ Namozni ado etganingizdan so'ng, Allohni turgan, o'tirgan va yonboshlagan holingizda eslang. Xotirjam bo'lganingizda namozni to'liq ado eting. Albatta, namoz mo'minlarga vaqtida farz qilingandir. (Niso surasi 103-oyat)\n\n`;
-                preview += `👨‍💻 Bot yaratuvchi: @Abdulloh_Ummati_Muhammad`;
+                preview += `"Namozni ado etganingizdan so'ng Allohni eslang." (Niso 103)`;
                 
                 document.getElementById('previewContent').textContent = preview;
             } else {
@@ -398,7 +414,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            const elements = document.querySelectorAll('.input-group, .submit-btn');
+            const elements = document.querySelectorAll('.input-group, .submit-btn, .admin-btn');
             elements.forEach((el, index) => {
                 el.style.animationDelay = `${index * 0.1}s`;
                 el.classList.add('fade-in-up');
