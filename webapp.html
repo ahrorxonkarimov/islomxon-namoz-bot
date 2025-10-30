@@ -68,6 +68,9 @@
             font-weight: 600;
             color: #1B5E20;
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .input-group input,
@@ -79,6 +82,7 @@
             font-size: 15px;
             transition: all 0.3s ease;
             outline: none;
+            font-family: inherit;
         }
 
         .input-group input:focus,
@@ -116,7 +120,21 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
             margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(67, 171, 52, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(67, 171, 52, 0.6);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .admin-btn {
@@ -128,10 +146,17 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
             text-decoration: none;
             text-align: center;
             display: block;
             margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
         }
 
         .loading-spinner {
@@ -156,9 +181,11 @@
             background: linear-gradient(135deg, #E8F5E8, #C8E6C9);
             border-radius: 12px;
             text-align: center;
+            font-style: italic;
             color: #1B5E20;
             border-left: 4px solid #43AB34;
             font-size: 13px;
+            line-height: 1.5;
         }
 
         .footer {
@@ -167,6 +194,7 @@
             text-align: center;
             color: white;
             font-size: 12px;
+            border-top: 2px solid rgba(255,255,255,0.1);
         }
 
         .success-message {
@@ -177,6 +205,7 @@
             text-align: center;
             margin-bottom: 20px;
             display: none;
+            font-weight: 600;
         }
 
         .error-message {
@@ -187,6 +216,33 @@
             text-align: center;
             margin-bottom: 20px;
             display: none;
+            font-weight: 600;
+        }
+
+        .preview-section {
+            background: #F1F8E9;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 2px dashed #43AB34;
+            display: none;
+        }
+
+        .preview-title {
+            font-weight: 600;
+            color: #1B5E20;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .preview-content {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: pre-line;
         }
     </style>
 </head>
@@ -201,42 +257,56 @@
             <div id="errorMessage" class="error-message"></div>
             <div id="successMessage" class="success-message"></div>
 
+            <div id="previewSection" class="preview-section">
+                <div class="preview-title">👀 Post Ko'rinishi:</div>
+                <div id="previewContent" class="preview-content"></div>
+            </div>
+
             <form id="prayerForm" class="form">
                 <div class="input-group">
-                    <label>📅 Sana</label>
-                    <input type="text" id="sana" required placeholder="Masalan: 20-dekabr, 2024">
+                    <label for="sana">📅 Sana</label>
+                    <input type="text" id="sana" name="sana" required 
+                           placeholder="Masalan: 20-dekabr, 2024"
+                           oninput="updatePreview()">
                 </div>
 
                 <div class="prayer-times">
                     <div class="input-group">
-                        <label>🌅 Bomdod</label>
-                        <input type="text" id="bomdod" required placeholder="06:00">
+                        <label for="bomdod">🌅 Bomdod</label>
+                        <input type="text" id="bomdod" name="bomdod" required 
+                               placeholder="06:00" oninput="updatePreview()">
                     </div>
 
                     <div class="input-group">
-                        <label>☀️ Peshin</label>
-                        <input type="text" id="peshin" required placeholder="12:30">
+                        <label for="peshin">☀️ Peshin</label>
+                        <input type="text" id="peshin" name="peshin" required 
+                               placeholder="12:30" oninput="updatePreview()">
                     </div>
 
                     <div class="input-group">
-                        <label>🌤️ Asr</label>
-                        <input type="text" id="asr" required placeholder="15:45">
+                        <label for="asr">🌤️ Asr</label>
+                        <input type="text" id="asr" name="asr" required 
+                               placeholder="15:45" oninput="updatePreview()">
                     </div>
 
                     <div class="input-group">
-                        <label>🌇 Shom</label>
-                        <input type="text" id="shom" required placeholder="17:20">
+                        <label for="shom">🌇 Shom</label>
+                        <input type="text" id="shom" name="shom" required 
+                               placeholder="17:20" oninput="updatePreview()">
                     </div>
 
                     <div class="input-group">
-                        <label>🌙 Hufton</label>
-                        <input type="text" id="hufton" required placeholder="18:45">
+                        <label for="hufton">🌙 Hufton</label>
+                        <input type="text" id="hufton" name="hufton" required 
+                               placeholder="18:45" oninput="updatePreview()">
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <label>💫 Izoh (ixtiyoriy)</label>
-                    <textarea id="izoh" placeholder="Qo'shimcha ma'lumot..."></textarea>
+                    <label for="izoh">💫 Izoh (ixtiyoriy)</label>
+                    <textarea id="izoh" name="izoh" 
+                              placeholder="Qo'shimcha ma'lumot yoki eslatma..."
+                              oninput="updatePreview()"></textarea>
                 </div>
 
                 <button type="submit" class="submit-btn">
@@ -250,12 +320,12 @@
             </form>
 
             <div class="quote">
-                <p>"⏳Namozni ado etganingizdan so‘ng, Allohni turgan, o‘tirgan va yonboshlagan holingizda eslang. Xotirjam bo‘lganingizda namozni to‘liq ado eting. Albatta, namoz mo‘minlarga vaqtida farz qilingandir. (Niso surasi 103-oyat)</p>
+                <p>⏳ Namozni ado etganingizdan so'ng, Allohni turgan, o'tirgan va yonboshlagan holingizda eslang. Xotirjam bo'lganingizda namozni to'liq ado eting. Albatta, namoz mo'minlarga vaqtida farz qilingandir. (Niso surasi 103-oyat)</p>
             </div>
         </main>
 
         <footer class="footer">
-            <p>Islomxon Namoz Vaqti Bot</p>
+            <p>Islomxon Namoz Vaqti Bot • @Islomxon_Masjidi_Namoz_Vaqti_Bot</p>
         </footer>
     </div>
 
@@ -263,7 +333,43 @@
         // Telegram Web App
         const tg = window.Telegram.WebApp;
         tg.expand();
-        
+        tg.enableClosingConfirmation();
+
+        // Post ko'rinishini yangilash
+        function updatePreview() {
+            const sana = document.getElementById('sana').value;
+            const bomdod = document.getElementById('bomdod').value;
+            const peshin = document.getElementById('peshin').value;
+            const asr = document.getElementById('asr').value;
+            const shom = document.getElementById('shom').value;
+            const hufton = document.getElementById('hufton').value;
+            const izoh = document.getElementById('izoh').value;
+
+            if (sana || bomdod || peshin || asr || shom || hufton) {
+                document.getElementById('previewSection').style.display = 'block';
+                
+                let preview = `🕌 Islomxon Jome Masjidi\n`;
+                preview += `📅 ${sana || 'Sana'}\n\n`;
+                preview += `🕒 Namoz Vaqtlari:\n\n`;
+                preview += `🌅 Bomdod: ${bomdod || '__:__'}\n`;
+                preview += `☀️ Peshin: ${peshin || '__:__'}\n`;
+                preview += `🌤️ Asr: ${asr || '__:__'}\n`;
+                preview += `🌇 Shom: ${shom || '__:__'}\n`;
+                preview += `🌙 Hufton: ${hufton || '__:__'}\n\n`;
+                
+                if (izoh) {
+                    preview += `💫 Izoh: ${izoh}\n\n`;
+                }
+                
+                preview += `⏳ Namozni ado etganingizdan so'ng, Allohni turgan, o'tirgan va yonboshlagan holingizda eslang. Xotirjam bo'lganingizda namozni to'liq ado eting. Albatta, namoz mo'minlarga vaqtida farz qilingandir. (Niso surasi 103-oyat)\n\n`;
+                preview += `👨‍💻 Bot: @Islomxon_Masjidi_Namoz_Vaqti_Bot`;
+                
+                document.getElementById('previewContent').textContent = preview;
+            } else {
+                document.getElementById('previewSection').style.display = 'none';
+            }
+        }
+
         // Form yuborish
         document.getElementById('prayerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -274,11 +380,12 @@
             const successMessage = document.getElementById('successMessage');
             const errorMessage = document.getElementById('errorMessage');
             
-            // Loading
+            // Loading holati
             btnText.style.display = 'none';
             spinner.style.display = 'block';
             submitBtn.disabled = true;
             errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
 
             try {
                 const formData = {
@@ -292,7 +399,7 @@
                     userId: tg.initDataUnsafe.user?.id || 5985723887
                 };
 
-                console.log('Yuborilayotgan maʼlumotlar:', formData);
+                console.log('📤 Yuborilayotgan maʼlumotlar:', formData);
 
                 const response = await fetch('/submit-prayer-times', {
                     method: 'POST',
@@ -303,12 +410,13 @@
                 });
 
                 const result = await response.json();
-                console.log('Server javobi:', result);
+                console.log('📨 Server javobi:', result);
 
                 if (result.success) {
                     successMessage.style.display = 'block';
                     successMessage.textContent = '✅ ' + result.message;
                     
+                    // 3 soniyadan keyin yopish
                     setTimeout(() => {
                         tg.close();
                     }, 3000);
@@ -317,7 +425,7 @@
                 }
 
             } catch (error) {
-                console.error('Xato:', error);
+                console.error('❌ Xato:', error);
                 errorMessage.style.display = 'block';
                 errorMessage.textContent = '❌ ' + error.message;
             } finally {
@@ -327,13 +435,16 @@
             }
         });
 
-        // Animatsiyalar
+        // Sahifa yuklanganda
         document.addEventListener('DOMContentLoaded', () => {
             const elements = document.querySelectorAll('.input-group, .submit-btn, .admin-btn');
             elements.forEach((el, index) => {
                 el.style.animationDelay = `${index * 0.1}s`;
             });
+            
+            // Boshlang'ich preview
+            updatePreview();
         });
     </script>
 </body>
-</html>
+                                                             </html>
