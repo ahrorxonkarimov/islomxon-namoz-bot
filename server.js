@@ -3,7 +3,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 10000; // ⬅️ 3000 o'rniga 10000
+const PORT = process.env.PORT || 10000;
 const BOT_TOKEN = process.env.BOT_TOKEN || '8353179858:AAFMgCR5KLWOh7-4Tid-A4x1RAwPd3-Y9xE';
 const ADMIN_IDS = [7894421569, 5985723887];
 const CHANNELS = ['@Islomxon_masjidi'];
@@ -12,6 +12,40 @@ const bot = new TelegramBot(BOT_TOKEN);
 
 app.use(express.json());
 app.use(express.static('public'));
+
+// ASOSIY SAHIFA - BU YERNI QO'SHIYAPMAN
+app.get('/', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Islomxon Namoz Vaqti Bot</title>
+      <style>
+        body { 
+          font-family: Arial, sans-serif; 
+          text-align: center; 
+          padding: 50px; 
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+        }
+        .container {
+          background: rgba(255,255,255,0.1);
+          padding: 30px;
+          border-radius: 15px;
+          backdrop-filter: blur(10px);
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>🕌 Islomxon Namoz Vaqti Bot</h1>
+        <p>Bot muvaffaqiyatli ishlamoqda!</p>
+        <p><a href="/webapp.html" style="color: #ffd700;">Web App ni ochish</a></p>
+      </div>
+    </body>
+    </html>
+  `);
+});
 
 // Webhook endpoint
 app.post('/webhook', (req, res) => {
@@ -22,11 +56,6 @@ app.post('/webhook', (req, res) => {
 // Web App sahifasi
 app.get('/webapp.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'webapp.html'));
-});
-
-// Test endpoint
-app.get('/', (req, res) => {
-  res.send('Islomxon Namoz Vaqti Bot ishlamoqda!');
 });
 
 function isAdmin(userId) {
