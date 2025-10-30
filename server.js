@@ -3,7 +3,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000; // ⬅️ 3000 o'rniga 10000
 const BOT_TOKEN = process.env.BOT_TOKEN || '8353179858:AAFMgCR5KLWOh7-4Tid-A4x1RAwPd3-Y9xE';
 const ADMIN_IDS = [7894421569, 5985723887];
 const CHANNELS = ['@Islomxon_masjidi'];
@@ -13,13 +13,20 @@ const bot = new TelegramBot(BOT_TOKEN);
 app.use(express.json());
 app.use(express.static('public'));
 
+// Webhook endpoint
 app.post('/webhook', (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
 });
 
+// Web App sahifasi
 app.get('/webapp.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'webapp.html'));
+});
+
+// Test endpoint
+app.get('/', (req, res) => {
+  res.send('Islomxon Namoz Vaqti Bot ishlamoqda!');
 });
 
 function isAdmin(userId) {
@@ -30,12 +37,14 @@ async function sendToChannels(message) {
   for (const channel of CHANNELS) {
     try {
       await bot.sendMessage(channel, message, { parse_mode: 'HTML' });
+      console.log(`Xabar ${channel} kanaliga yuborildi`);
     } catch (error) {
       console.error(`Xato: ${channel} kanaliga xabar yuborishda xatolik:`, error.message);
     }
   }
 }
 
+// /start komandasi
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
   const userId = msg.from.id;
@@ -48,7 +57,7 @@ bot.onText(/\/start/, (msg) => {
     inline_keyboard: [[
       {
         text: '🕌 Namoz vaqtlarini yuborish',
-        web_app: { url: `https://YOUR-APP-NAME.onrender.com/webapp.html` }
+        web_app: { url: `https://islomxon-namoz-bot.onrender.com/webapp.html` }
       }
     ]]
   };
@@ -59,12 +68,14 @@ bot.onText(/\/start/, (msg) => {
   });
 });
 
+// /id komandasi
 bot.onText(/\/id/, (msg) => {
   const chatId = msg.chat.id;
   const userId = msg.from.id;
   bot.sendMessage(chatId, `Sizning ID: ${userId}`);
 });
 
+// Web App ma'lumotlarini qabul qilish
 app.post('/submit-prayer-times', express.json(), async (req, res) => {
   try {
     const { bomdod, peshin, asr, shom, hufton, sana, izoh, userId } = req.body;
