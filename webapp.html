@@ -5,131 +5,272 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Islomxon Namoz Vaqtlari</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #43AB34 0%, #2D7D32 100%);
             min-height: 100vh;
             padding: 20px;
-            margin: 0;
+            color: #2d3436;
         }
+
         .container {
             max-width: 500px;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
             overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
         }
+
         .header {
             background: linear-gradient(135deg, #43AB34, #2D7D32);
-            padding: 20px;
+            padding: 30px 20px;
             text-align: center;
             color: white;
+            border-bottom: 3px solid #1B5E20;
         }
-        .main {
-            padding: 20px;
-        }
-        .input-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
+
+        .title {
+            font-size: 26px;
             font-weight: bold;
-            color: #2D7D32;
+            margin-bottom: 8px;
         }
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #E8F5E8;
-            border-radius: 8px;
+
+        .subtitle {
             font-size: 16px;
+            opacity: 0.9;
         }
-        textarea {
-            min-height: 80px;
+
+        .main {
+            padding: 30px 25px;
         }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: #1B5E20;
+            font-size: 15px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            padding: 16px;
+            border: 2px solid #E8F5E8;
+            border-radius: 15px;
+            background: #F8FFF8;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: #43AB34;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(67, 171, 52, 0.3);
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
         .prayer-times {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 20px;
         }
+
+        @media (max-width: 480px) {
+            .prayer-times {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .submit-btn {
-            width: 100%;
-            background: #43AB34;
+            background: linear-gradient(135deg, #43AB34, #2D7D32);
             color: white;
             border: none;
-            padding: 15px;
-            border-radius: 8px;
+            padding: 20px;
+            border-radius: 15px;
             font-size: 18px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 10px;
+            transition: all 0.3s ease;
+            margin-top: 15px;
         }
-        .message {
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 15px;
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(67, 171, 52, 0.6);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .loading-spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid transparent;
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
             display: none;
         }
-        .success {
-            background: #43AB34;
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .quote {
+            margin-top: 35px;
+            padding: 25px;
+            background: linear-gradient(135deg, #E8F5E8, #C8E6C9);
+            border-radius: 15px;
+            text-align: center;
+            color: #1B5E20;
+            border-left: 5px solid #43AB34;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #2D7D32, #1B5E20);
+            padding: 20px;
+            text-align: center;
             color: white;
         }
-        .error {
+
+        .success-message {
+            background: linear-gradient(135deg, #43AB34, #2D7D32);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 25px;
+            display: none;
+        }
+
+        .error-message {
             background: #ff6b6b;
             color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .preview-section {
+            background: #F1F8E9;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 2px dashed #43AB34;
+            display: none;
+        }
+
+        .preview-title {
+            font-weight: 600;
+            color: #1B5E20;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .preview-content {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-line;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🕌 Islomxon Masjidi</h1>
-            <p>Namoz Vaqtlari</p>
-        </div>
-        
-        <div class="main">
-            <div id="message" class="message"></div>
-            
-            <form id="prayerForm">
+        <header class="header">
+            <h1 class="title">🕌 Islomxon Jome Masjidi</h1>
+            <p class="subtitle">Namoz Vaqtlari Kiritish</p>
+        </header>
+
+        <main class="main">
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+
+            <div id="previewSection" class="preview-section">
+                <div class="preview-title">📋 Post Ko'rinishi:</div>
+                <div id="previewContent" class="preview-content"></div>
+            </div>
+
+            <form id="prayerForm" class="form">
                 <div class="input-group">
-                    <label>Sana</label>
-                    <input type="text" id="sana" required placeholder="20-dekabr, 2024">
+                    <label for="sana">📅 Sana</label>
+                    <input type="text" id="sana" required placeholder="Masalan: 20-dekabr, 2024">
                 </div>
-                
+
                 <div class="prayer-times">
                     <div class="input-group">
-                        <label>Bomdod</label>
+                        <label for="bomdod">🌅 Bomdod</label>
                         <input type="text" id="bomdod" required placeholder="06:00">
                     </div>
                     <div class="input-group">
-                        <label>Peshin</label>
+                        <label for="peshin">☀️ Peshin</label>
                         <input type="text" id="peshin" required placeholder="12:30">
                     </div>
                     <div class="input-group">
-                        <label>Asr</label>
+                        <label for="asr">🌤️ Asr</label>
                         <input type="text" id="asr" required placeholder="15:45">
                     </div>
                     <div class="input-group">
-                        <label>Shom</label>
+                        <label for="shom">🌇 Shom</label>
                         <input type="text" id="shom" required placeholder="17:20">
                     </div>
                     <div class="input-group">
-                        <label>Hufton</label>
+                        <label for="hufton">🌙 Hufton</label>
                         <input type="text" id="hufton" required placeholder="18:45">
                     </div>
                 </div>
-                
+
                 <div class="input-group">
-                    <label>Izoh (ixtiyoriy)</label>
+                    <label for="izoh">💫 Izoh (ixtiyoriy)</label>
                     <textarea id="izoh" placeholder="Qo'shimcha ma'lumot..."></textarea>
                 </div>
-                
-                <button type="submit" class="submit-btn" id="submitBtn">
-                    📤 Kanallarga Yuborish
+
+                <button type="submit" class="submit-btn">
+                    <span class="btn-text">📤 Kanallarga Yuborish</span>
+                    <div class="loading-spinner" id="loadingSpinner"></div>
                 </button>
             </form>
-        </div>
+
+            <div class="quote">
+                <p>"Namozni ado etganingizdan so'ng Allohni eslang." (Niso 103)</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Islomxon Namoz Vaqti Bot</p>
+        </footer>
     </div>
 
     <script>
@@ -138,18 +279,62 @@
         tg.expand();
         
         console.log('WebApp ochildi');
-        console.log('User:', tg.initDataUnsafe.user);
 
+        // Post ko'rinishini yangilash
+        function updatePreview() {
+            const sana = document.getElementById('sana').value;
+            const bomdod = document.getElementById('bomdod').value;
+            const peshin = document.getElementById('peshin').value;
+            const asr = document.getElementById('asr').value;
+            const shom = document.getElementById('shom').value;
+            const hufton = document.getElementById('hufton').value;
+            const izoh = document.getElementById('izoh').value;
+
+            if (sana || bomdod || peshin || asr || shom || hufton) {
+                document.getElementById('previewSection').style.display = 'block';
+                
+                let preview = `🕌 Islomxon Jome Masjidi\n`;
+                preview += `📅 ${sana || 'Sana'}\n\n`;
+                preview += `🕒 Namoz Vaqtlari:\n\n`;
+                preview += `🌅 Bomdod: ${bomdod || '__:__'}\n`;
+                preview += `☀️ Peshin: ${peshin || '__:__'}\n`;
+                preview += `🌤️ Asr: ${asr || '__:__'}\n`;
+                preview += `🌇 Shom: ${shom || '__:__'}\n`;
+                preview += `🌙 Hufton: ${hufton || '__:__'}\n\n`;
+                
+                if (izoh) {
+                    preview += `💫 Izoh: ${izoh}\n\n`;
+                }
+                
+                preview += `"Namozni ado etganingizdan so'ng Allohni eslang." (Niso 103)`;
+                
+                document.getElementById('previewContent').textContent = preview;
+            } else {
+                document.getElementById('previewSection').style.display = 'none';
+            }
+        }
+
+        // Inputlarni kuzatish
+        document.querySelectorAll('input, textarea').forEach(input => {
+            input.addEventListener('input', updatePreview);
+        });
+
+        // Form yuborish
         document.getElementById('prayerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             console.log('Form yuborildi');
             
-            const submitBtn = document.getElementById('submitBtn');
-            const messageDiv = document.getElementById('message');
+            const submitBtn = document.querySelector('.submit-btn');
+            const btnText = document.querySelector('.btn-text');
+            const spinner = document.getElementById('loadingSpinner');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
             
+            // Loading
+            btnText.style.display = 'none';
+            spinner.style.display = 'block';
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Yuborilmoqda...';
-            messageDiv.style.display = 'none';
+            errorMessage.style.display = 'none';
 
             try {
                 const formData = {
@@ -177,9 +362,8 @@
                 console.log('Server javobi:', result);
 
                 if (result.success) {
-                    messageDiv.className = 'message success';
-                    messageDiv.textContent = '✅ ' + result.message;
-                    messageDiv.style.display = 'block';
+                    successMessage.style.display = 'block';
+                    successMessage.textContent = '✅ ' + result.message;
                     
                     setTimeout(() => {
                         tg.close();
@@ -190,21 +374,27 @@
 
             } catch (error) {
                 console.error('Xato:', error);
-                messageDiv.className = 'message error';
-                messageDiv.textContent = '❌ ' + error.message;
-                messageDiv.style.display = 'block';
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = '❌ ' + error.message;
             } finally {
+                btnText.style.display = 'block';
+                spinner.style.display = 'none';
                 submitBtn.disabled = false;
-                submitBtn.textContent = '📤 Kanallarga Yuborish';
             }
         });
 
-        // Bugungi sana
-        const today = new Date();
-        document.getElementById('sana').value = today.toLocaleDateString('uz-UZ', { 
-            day: 'numeric', 
-            month: 'long', 
-            year: 'numeric' 
+        // Sahifa yuklanganda
+        document.addEventListener('DOMContentLoaded', () => {
+            // Bugungi sana
+            const today = new Date();
+            document.getElementById('sana').value = today.toLocaleDateString('uz-UZ', { 
+                day: 'numeric', 
+                month: 'long', 
+                year: 'numeric' 
+            });
+            
+            // Boshlang'ich preview
+            updatePreview();
         });
     </script>
 </body>
