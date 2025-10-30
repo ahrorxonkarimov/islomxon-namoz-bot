@@ -5,8 +5,11 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 10000;
 const BOT_TOKEN = process.env.BOT_TOKEN || '8353179858:AAFMgCR5KLWOh7-4Tid-A4x1RAwPd3-Y9xE';
-const ADMIN_IDS = [7894421569, 382697989];
-const CHANNELS = ['@Islomxon_masjidi']; // ✅ TO'G'RI USERNAME
+
+// ✅ YANGILANGAN ADMINLAR RO'YXATI
+const ADMIN_IDS = [7894421569, 5985723887, 382697989];
+
+const CHANNELS = ['@Islomxon_masjidi'];
 
 const bot = new TelegramBot(BOT_TOKEN);
 
@@ -39,6 +42,7 @@ app.get('/', (req, res) => {
       <div class="container">
         <h1>🕌 Islomxon Namoz Vaqti Bot</h1>
         <p>Bot muvaffaqiyatli ishlamoqda!</p>
+        <p>Adminlar: ${ADMIN_IDS.join(', ')}</p>
         <p><a href="/webapp.html" style="color: #ffd700;">Web App ni ochish</a></p>
       </div>
     </body>
@@ -125,7 +129,7 @@ bot.onText(/\/start/, (msg) => {
 
   if (!isAdmin(userId)) {
     console.log(`❌ Foydalanuvchi ${userId} admin emas`);
-    return bot.sendMessage(chatId, '❌ Faqat admin');
+    return bot.sendMessage(chatId, '❌ Faqat adminlar uchun');
   }
 
   console.log(`✅ Foydalanuvchi ${userId} admin`);
@@ -168,7 +172,7 @@ app.post('/submit-prayer-times', express.json(), async (req, res) => {
 
     if (!isAdmin(userId)) {
       console.log(`❌ DEBUG: User ${userId} admin emas`);
-      return res.status(403).json({ success: false, error: 'Faqat admin' });
+      return res.status(403).json({ success: false, error: 'Faqat adminlar uchun' });
     }
 
     console.log(`✅ DEBUG: User ${userId} admin`);
@@ -180,7 +184,7 @@ app.post('/submit-prayer-times', express.json(), async (req, res) => {
     }
 
     // Formatlash
-    const message = `🕌 **Islomxon Jome Masjidi**\n📅 ${sana}\n\n🕒 **Namoz Vaqtlari:**\n\n🌅 **Bomdod:** ${bomdod}\n☀️ **Peshin:** ${peshin}\n🌤️ **Asr:** ${asr}\n🌇 **Shom:** ${shom}\n🌙 **Hufton:** ${hufton}\n\n${izoh ? `💫 **Izoh:** ${izoh}\n\n` : ''}**"📍 Hududingiz uchun to‘g‘ri vaqtda ibodatni ado eting. Alloh har bir qadamimizni savobli qilsin!`;
+    const message = `🕌 **Islomxon Jome Masjidi**\n📅 ${sana}\n\n🕒 **Namoz Vaqtlari:**\n\n🌅 **Bomdod:** ${bomdod}\n☀️ **Peshin:** ${peshin}\n🌤️ **Asr:** ${asr}\n🌇 **Shom:** ${shom}\n🌙 **Hufton:** ${hufton}\n\n${izoh ? `💫 **Izoh:** ${izoh}\n\n` : ''}**"📍 Hududingiz uchun to'g'ri vaqtda ibodatni ado eting. Alloh har bir qadamimizni savobli qilsin!"`;
 
     console.log('📝 DEBUG: Yuborilayotgan xabar:');
     console.log(message);
@@ -215,6 +219,6 @@ app.listen(PORT, () => {
   console.log(`🌐 Asosiy sahifa: https://islomxon-namoz-bot.onrender.com`);
   console.log(`🤖 Web App: https://islomxon-namoz-bot.onrender.com/webapp.html`);
   console.log(`📊 Kanallar: ${CHANNELS.join(', ')}`);
-  console.log(`👤 Adminlar: ${ADMIN_IDS.join(', ')}`);
+  console.log(`👥 Adminlar: ${ADMIN_IDS.join(', ')}`);
   console.log(`🎉 ==========================================\n`);
 });
