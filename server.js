@@ -7,13 +7,12 @@ const PORT = process.env.PORT || 10000;
 const BOT_TOKEN = process.env.BOT_TOKEN || '8353179858:AAFMgCR5KLWOh7-4Tid-A4x1RAwPd3-Y9xE';
 const ADMIN_IDS = [7894421569, 5985723887];
 const CHANNELS = ['@Islomxon_masjidi'];
-const ADMIN_LINK = 'https://t.me/Abdulloh_Ummati_Muhammad';
 
 const bot = new TelegramBot(BOT_TOKEN);
 
 app.use(express.json());
 
-// ✅ PING ENDPOINT - BOTNI USHLAB TURISH UCHUN
+// PING ENDPOINT
 app.get('/ping', (req, res) => {
   console.log('🏓 Ping qabul qilindi - Bot faol');
   res.json({ 
@@ -43,35 +42,15 @@ app.get('/', (req, res) => {
           padding: 30px;
           border-radius: 15px;
           backdrop-filter: blur(10px);
-          max-width: 500px;
-          margin: 0 auto;
-        }
-        .admin-info {
-          background: rgba(255,255,255,0.2);
-          padding: 15px;
-          border-radius: 10px;
-          margin: 20px 0;
-        }
-        .admin-link {
-          color: #FFD700;
-          text-decoration: none;
-          font-weight: bold;
-        }
-        .admin-link:hover {
-          text-decoration: underline;
         }
       </style>
     </head>
     <body>
       <div class="container">
         <h1>🕌 Islomxon Namoz Vaqti Bot</h1>
-        <div class="admin-info">
-          <p>👨‍💻 Bot Yaratuvchi:</p>
-          <p><a href="${ADMIN_LINK}" class="admin-link" target="_blank">Abdulloh Ummati Muhammad</a></p>
-        </div>
         <p>✅ Bot faol holatda</p>
         <p>🕒 ${new Date().toLocaleString('uz-UZ')}</p>
-        <p><a href="/webapp.html" style="color: #ffd700; text-decoration: none; font-weight: bold;">📱 Web App ni ochish</a></p>
+        <p><a href="/webapp.html" style="color: #ffd700;">Web App ni ochish</a></p>
       </div>
     </body>
     </html>
@@ -104,13 +83,6 @@ async function sendToChannels(message) {
       const chat = await bot.getChat(channel);
       console.log(`✅ DEBUG: Kanal topildi: "${chat.title}"`);
       
-      const chatMember = await bot.getChatMember(channel, (await bot.getMe()).id);
-      console.log(`✅ DEBUG: Bot holati: ${chatMember.status}`);
-      
-      if (chatMember.status !== 'administrator' && chatMember.status !== 'creator') {
-        throw new Error(`Bot kanalda admin emas! Bot holati: ${chatMember.status}`);
-      }
-      
       console.log(`📤 DEBUG: Xabar yuborilmoqda...`);
       const result = await bot.sendMessage(channel, message);
       console.log(`🎉 DEBUG: Xabar MUVAFFAQIYATLI yuborildi!`);
@@ -122,15 +94,6 @@ async function sendToChannels(message) {
       results.push({ channel, success: false, error: error.message });
     }
   }
-  
-  console.log(`\n📊 DEBUG: Yakuniy natija:`);
-  results.forEach(result => {
-    if (result.success) {
-      console.log(`   ✅ ${result.channel}: MUVAFFAQIYATLI`);
-    } else {
-      console.log(`   ❌ ${result.channel}: XATO - ${result.error}`);
-    }
-  });
   
   return results;
 }
@@ -144,26 +107,21 @@ bot.onText(/\/start/, (msg) => {
 
   if (!isAdmin(userId)) {
     console.log(`❌ Foydalanuvchi ${userId} admin emas`);
-    return bot.sendMessage(chatId, '❌ Faqat adminlar foydalanishi mumkin');
+    return bot.sendMessage(chatId, '❌ Faqat admin');
   }
 
   const keyboard = {
     inline_keyboard: [[
       {
-        text: '🕌 Namoz Vaqtlarini Kiriting',
+        text: '🕌 Namoz vaqtlarini yuborish',
         web_app: { url: `https://islomxon-namoz-bot.onrender.com/webapp.html` }
       }
     ]]
   };
 
-  const adminMessage = `Assalomu alaykum! *Islomxon Namoz Vaqti Bot* ga xush kelibsiz!\\n\\n` +
-    `👨‍💻 *Bot Yaratuvchi:* [Abdulloh Ummati Muhammad](${ADMIN_LINK})\\n\\n` +
-    `Namoz vaqtlarini yuborish uchun quyidagi tugmani bosing:`;
-
-  bot.sendMessage(chatId, adminMessage, {
+  bot.sendMessage(chatId, `Assalomu alaykum! *Islomxon Namoz Vaqti Bot* ga xush kelibsiz!\n\nNamoz vaqtlarini yuborish uchun quyidagi tugmani bosing:`, {
     reply_markup: keyboard,
-    parse_mode: 'Markdown',
-    disable_web_page_preview: true
+    parse_mode: 'Markdown'
   });
 });
 
@@ -189,7 +147,7 @@ app.post('/submit-prayer-times', express.json(), async (req, res) => {
       return res.status(400).json({ success: false, error: 'Barcha maydonlarni toʻldiring' });
     }
 
-    // ✅ YANGI MATN FORMATI
+    // POST FORMATI
     const message = `🕌 Islomxon Jome Masjidi
 📅 ${sana}
 
@@ -201,9 +159,7 @@ app.post('/submit-prayer-times', express.json(), async (req, res) => {
 🌇 Shom: ${shom}
 🌙 Hufton: ${hufton}
 
-${izoh ? `💫 Izoh: ${izoh}\\n\\n` : ''}⏳ *Namozni ado etganingizdan so'ng, Allohni turgan, o'tirgan va yonboshlagan holingizda eslang. Xotirjam bo'lganingizda namozni to'liq ado eting. Albatta, namoz mo'minlarga vaqtida farz qilingandir.* (Niso surasi 103-oyat)
-
-👨‍💻 Bot yaratuvchi: @Abdulloh_Ummati_Muhammad`;
+${izoh ? `💫 Izoh: ${izoh}\n\n` : ''}"Namozni ado etganingizdan so'ng Allohni eslang." (Niso 103)`;
 
     console.log('🚀 DEBUG: Kanallarga yuborish boshlandi...');
     const results = await sendToChannels(message);
@@ -213,7 +169,7 @@ ${izoh ? `💫 Izoh: ${izoh}\\n\\n` : ''}⏳ *Namozni ado etganingizdan so'ng, A
 
     res.json({
       success: successCount > 0,
-      message: `✅ Xabar ${successCount}/${totalCount} kanalga muvaffaqiyatli yuborildi`,
+      message: `Xabar ${successCount}/${totalCount} kanalga muvaffaqiyatli yuborildi`,
       details: results
     });
 
@@ -228,11 +184,8 @@ app.listen(PORT, () => {
   console.log(`\n🎉 ==========================================`);
   console.log(`✅ Server ${PORT}-portda ishga tushdi`);
   console.log(`🌐 Asosiy sahifa: https://islomxon-namoz-bot.onrender.com`);
-  console.log(`🏓 Ping endpoint: https://islomxon-namoz-bot.onrender.com/ping`);
   console.log(`🤖 Web App: https://islomxon-namoz-bot.onrender.com/webapp.html`);
   console.log(`📊 Kanallar: ${CHANNELS.join(', ')}`);
   console.log(`👤 Adminlar: ${ADMIN_IDS.join(', ')}`);
-  console.log(`👨‍💻 Yaratuvchi: ${ADMIN_LINK}`);
-  console.log(`🕒 Boshlanish vaqti: ${new Date().toLocaleString('uz-UZ')}`);
   console.log(`🎉 ==========================================\n`);
 });
