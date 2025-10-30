@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Islomxon Bot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #43AB34 0%, #2D7D32 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d3436;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #43AB34, #2D7D32);
+            padding: 25px 20px;
+            text-align: center;
+            color: white;
+            border-bottom: 3px solid #1B5E20;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .nav {
+            display: flex;
+            background: #2D7D32;
+            padding: 0;
+        }
+
+        .nav-item {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-item.active {
+            background: #43AB34;
+            border-bottom: 3px solid #FFD700;
+        }
+
+        .content {
+            padding: 25px;
+            min-height: 400px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: #F8FFF8;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #E8F5E8;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #43AB34;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .user-list {
+            background: #F8FFF8;
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #E8F5E8;
+        }
+
+        .user-item {
+            padding: 12px;
+            border-bottom: 1px solid #E8F5E8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-item:last-child {
+            border-bottom: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #43AB34, #2D7D32);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(67, 171, 52, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #FF6B6B, #EE5A24);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1B5E20;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E8F5E8;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .message-item {
+            background: #F8FFF8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px solid #E8F5E8;
+        }
+
+        .message-meta {
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">🕌 Islomxon Bot Admin Paneli</h1>
+            <p>Botni boshqarish markazi</p>
+        </header>
+
+        <nav class="nav">
+            <div class="nav-item active" onclick="showTab('stats')">📊 Statistika</div>
+            <div class="nav-item" onclick="showTab('users')">👥 Foydalanuvchilar</div>
+            <div class="nav-item" onclick="showTab('messages')">📨 Xabarlar</div>
+            <div class="nav-item" onclick="showTab('settings')">⚙️ Sozlamalar</div>
+        </nav>
+
+        <div class="content">
+            <!-- Statistika -->
+            <div id="stats" class="tab-content active">
+                <h2>📊 Bot Statistika</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalUsers">0</div>
+                        <div class="stat-label">Jami Foydalanuvchilar</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalMessages">0</div>
+                        <div class="stat-label">Yuborilgan Xabarlar</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="activeUsers">0</div>
+                        <div class="stat-label">Faol Foydalanuvchilar</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="channels">1</div>
+                        <div class="stat-label">Ulangan Kanallar</div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" onclick="refreshStats()">🔄 Yangilash</button>
+                    <a href="/webapp.html" class="btn btn-secondary" style="margin-left: 10px;">📱 Web App</a>
+                </div>
+            </div>
+
+            <!-- Foydalanuvchilar -->
+            <div id="users" class="tab-content">
+                <h2>👥 Foydalanuvchilar Ro'yxati</h2>
+                <div class="user-list" id="usersList">
+                    <div class="user-item">
+                        <div>
+                            <strong>👤 Foydalanuvchi</strong>
+                            <div class="message-meta">ID: 5985723887 | Admin</div>
+                        </div>
+                        <div>
+                            <span style="color: #43AB34;">✅ Faol</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Xabarlar -->
+            <div id="messages" class="tab-content">
+                <h2>📨 Xabarlarni Boshqarish</h2>
+                <div class="form-group">
+                    <label>📝 Yangi Xabar Yuborish:</label>
+                    <textarea id="newMessage" rows="4" placeholder="Xabar matnini kiriting..."></textarea>
+                </div>
+                <button class="btn" onclick="sendBroadcast()">📤 Barchaga Yuborish</button>
+
+                <div style="margin-top: 30px;">
+                    <h3>📋 So'nggi Xabarlar</h3>
+                    <div id="messagesList">
+                        <div class="message-item">
+                            <strong>🕌 Namoz Vaqtlari</strong>
+                            <p>20-dekabr, 2024 yil namoz vaqtlari...</p>
+                            <div class="message-meta">📅 20.12.2024 | ✅ Yuborildi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sozlamalar -->
+            <div id="settings" class="tab-content">
+                <h2>⚙️ Bot Sozlamalari</h2>
+                
+                <div class="form-group">
+                    <label>🎨 Mavzu Tanlash:</label>
+                    <select id="themeSelect" onchange="changeTheme(this.value)">
+                        <option value="green">🟢 Yashil Mavzu</option>
+                        <option value="blue">🔵 Ko'k Mavzu</option>
+                        <option value="dark">⚫ Qora Mavzu</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>🔔 Eslatmalar:</label>
+                    <div>
+                        <input type="checkbox" id="notifications" checked>
+                        <label for="notifications">Namoz vaqtidan 10 daqiqa oldin eslatma</label>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="saveSettings()">💾 Saqlash</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab ko'rsatish
+        function showTab(tabName) {
+            // Barcha tablarni yashirish
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Barcha nav itemlarni yashirish
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Tanlangan tab va nav itemni ko'rsatish
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Statistika yangilash
+        function refreshStats() {
+            document.getElementById('totalUsers').textContent = '125';
+            document.getElementById('totalMessages').textContent = '47';
+            document.getElementById('activeUsers').textContent = '89';
+            alert('📊 Statistika yangilandi!');
+        }
+
+        // Mavzu o'zgartirish
+        function changeTheme(theme) {
+            const body = document.body;
+            
+            if (theme === 'green') {
+                body.style.background = 'linear-gradient(135deg, #43AB34 0%, #2D7D32 100%)';
+            } else if (theme === 'blue') {
+                body.style.background = 'linear-gradient(135deg, #3498db 0%, #2c3e50 100%)';
+            } else if (theme === 'dark') {
+                body.style.background = 'linear-gradient(135deg, #2d3436 0%, #000000 100%)';
+            }
+        }
+
+        // Broadcast xabar yuborish
+        function sendBroadcast() {
+            const message = document.getElementById('newMessage').value;
+            if (!message) {
+                alert('📝 Iltimos, xabar matnini kiriting!');
+                return;
+            }
+            
+            if (confirm(`📤 "${message}" xabarini barcha foydalanuvchilarga yuborishni tasdiqlaysizmi?`)) {
+                alert('✅ Xabar yuborildi!');
+                document.getElementById('newMessage').value = '';
+            }
+        }
+
+        // Sozlamalarni saqlash
+        function saveSettings() {
+            alert('✅ Sozlamalar muvaffaqiyatli saqlandi!');
+        }
+
+        // Sahifa yuklanganda
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshStats();
+        });
+    </script>
+</body>
+</html>
