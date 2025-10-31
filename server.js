@@ -154,12 +154,12 @@ app.post('/submit-prayer-times', express.json(), async (req, res) => {
     }
 
     // Ma'lumotlarni tekshirish
-    if (!bomdod || !peshin || !asr || !shom || !hufton || !sana) {
+    if (!bomdod || !peshin || !asr || !shom || !xufton || !sana) {
       return res.status(400).json({ success: false, error: 'Barcha maydonlarni to\'ldiring' });
     }
 
     // Formatlash
-    const message = `🕌 Islomxon Jome Masjidi\n📅 ${sana}\n\n🕒 Namoz Vaqtlari:\n\n🌅 Bomdod: ${bomdod}\n☀️ Peshin: ${peshin}\n🌤️ Asr: ${asr}\n🌇 Shom: ${shom}\n🌙 Hufton: ${hufton}\n\n${izoh ? `💫 Izoh: ${izoh}\n\n` : ''}📍 Hududingiz uchun to'g'ri vaqtda ibodatni ado eting. Alloh har bir qadamimizni savobli qilsin!`;
+    const message = `🕌 Islomxon Jome Masjidi\n📅 ${sana}\n\n🕒 Namoz Vaqtlari:\n\n🌅 Bomdod: ${bomdod}\n☀️ Peshin: ${peshin}\n🌤️ Asr: ${asr}\n🌇 Shom: ${shom}\n🌙 Xufton: ${hufton}\n\n${izoh ? `💫 Izoh: ${izoh}\n\n` : ''}📍 Hududingiz uchun to'g'ri vaqtda ibodatni ado eting. Alloh har bir qadamimizni savobli qilsin!`;
 
     console.log('📤 Kanalga post yuborilmoqda...');
     
