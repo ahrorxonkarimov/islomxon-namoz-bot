@@ -1,0 +1,417 @@
+:root {
+    --primary: #1a5f7a;
+    --secondary: #159895;
+    --accent: #57c5b6;
+    --gold: #d4af37;
+    --light: #f8f9fa;
+    --dark: #2d3748;
+    --gradient: linear-gradient(135deg, #1a5f7a 0%, #159895 100%);
+    --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.2);
+    --border-radius: 20px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--gradient-dark);
+    color: var(--light);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Floating Elements */
+.floating-elements {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.floating-element {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.1;
+    color: var(--gold);
+    animation: floatAround 20s infinite linear;
+}
+
+.floating-element:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+.floating-element:nth-child(2) { top: 60%; right: 10%; animation-delay: -7s; }
+.floating-element:nth-child(3) { bottom: 20%; left: 20%; animation-delay: -14s; }
+
+@keyframes floatAround {
+    0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+    25% { transform: translate(100px, 50px) rotate(90deg) scale(1.1); }
+    50% { transform: translate(50px, 100px) rotate(180deg) scale(1); }
+    75% { transform: translate(-50px, 50px) rotate(270deg) scale(1.1); }
+}
+
+/* Admin Body */
+.admin-body {
+    background: var(--gradient-dark);
+    min-height: 100vh;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-container {
+    max-width: 500px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--border-radius);
+    margin: 20px;
+    position: relative;
+    z-index: 1;
+    animation: slideInUp 0.8s ease-out;
+}
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Admin Header */
+.admin-header {
+    background: var(--gradient);
+    color: white;
+    padding: 30px;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% { transform: rotate(45deg) translateX(-100%); }
+    100% { transform: rotate(45deg) translateX(100%); }
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.masjid-icon {
+    font-size: 3rem;
+    color: var(--gold);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.header-text h1 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.header-text p {
+    opacity: 0.9;
+}
+
+.language-switcher {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+}
+
+.lang-select {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+}
+
+/* Admin Main */
+.admin-main {
+    padding: 30px;
+}
+
+/* Form Section */
+.form-section {
+    margin-bottom: 30px;
+}
+
+.prayer-form {
+    animation: fadeIn 0.6s ease-out 0.2s both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--light);
+    font-size: 1rem;
+}
+
+.form-group label i {
+    color: var(--accent);
+}
+
+.form-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(87, 197, 182, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Prayer Grid */
+.prayer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.prayer-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.prayer-input:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.prayer-input::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+}
+
+.prayer-input:hover::before {
+    left: 100%;
+}
+
+.prayer-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.prayer-input label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--light);
+}
+
+.time-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.time-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    background: var(--gradient);
+    color: white;
+    border: none;
+    padding: 18px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+.btn-loader {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Social Section */
+.social-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 25px;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.social-link:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+}
+
+/* Result Message */
+.result-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    z-index: 1000;
+    animation: slideInRight 0.5s ease-out;
+    backdrop-filter: blur(10px);
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.result-message.success {
+    background: rgba(40, 167, 69, 0.9);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.result-message.error {
+    background: rgba(220, 53, 69, 0.9);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-container {
+        margin: 10px;
+    }
+    
+    .admin-header {
+        padding: 20px;
+    }
+    
+    .admin-main {
+        padding: 20px;
+    }
+    
+    .social-links {
+        flex-direction: column;
+    }
+    
+    .prayer-input {
+        padding: 15px;
+    }
+}
