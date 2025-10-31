@@ -6,26 +6,110 @@
     <title>Islomxon Jome Masjidi</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+    </div>
+
     <div class="container">
-        <div class="header">
+        <!-- Header -->
+        <header class="header">
             <div class="masjid-icon">
                 <i class="fas fa-mosque"></i>
             </div>
-            <h1 id="title">Islomxon Jome Masjidi</h1>
-            <p id="subtitle">Namoz vaqtlarini kiriting</p>
-        </div>
+            
+            <h1 class="title">Islomxon Jome Masjidi</h1>
+            <p class="subtitle">Namoz vaqtlari boti</p>
+            
+            <div class="current-time">
+                <i class="fas fa-clock"></i>
+                <span id="currentTime">00:00:00</span>
+            </div>
+        </header>
 
-        <a href="/admin" class="admin-btn">
-            <i class="fas fa-cog"></i>
-            Admin Panelga kirish
-        </a>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Prayer Times Card -->
+            <div class="prayer-card">
+                <div class="card-header">
+                    <i class="fas fa-praying-hands"></i>
+                    <h3>Bugungi Namoz Vaqtlari</h3>
+                </div>
+                
+                <div class="prayer-times" id="prayerTimes">
+                    <!-- JavaScript to populate -->
+                </div>
+                
+                <div class="card-footer">
+                    <p>🤲 Alloh har bir ibodatingizni qabul qilsin!</p>
+                </div>
+            </div>
 
-        <div class="current-times">
-            <h3>Joriy namoz vaqtlari:</h3>
-            <div id="timesDisplay"></div>
-        </div>
+            <!-- Admin Button -->
+            <a href="/admin" class="admin-btn">
+                <i class="fas fa-cog"></i>
+                Admin Panel
+                <span class="badge">FAQAT ADMINLAR</span>
+            </a>
+
+            <!-- Info Cards -->
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="fas fa-robot"></i>
+                    <h4>Telegram Bot</h4>
+                    <p>Bot orqali namoz vaqtlarini bilib boring</p>
+                    <a href="https://t.me/IslomxonMasjidiBot" class="btn-link" target="_blank">
+                        Botga o'tish <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+                
+                <div class="info-card">
+                    <i class="fas fa-broadcast-tower"></i>
+                    <h4>Kanal</h4>
+                    <p>Yangiliklarni kuzatib boring</p>
+                    <a href="https://t.me/Islomxon_masjidi" class="btn-link" target="_blank">
+                        Kanalga o'tish <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="contact-info">
+                    <p><i class="fas fa-map-marker-alt"></i> Toshkent, Yunusobod tumani</p>
+                    <p><i class="fas fa-clock"></i> Har kuni 5 vaqt namoz</p>
+                </div>
+                
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+                
+                <div class="copyright">
+                    <p>Islomxon Jome Masjidi • @Islomxon_masjidi</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-element">﷽</div>
+        <div class="floating-element">﴾﴿</div>
+        <div class="floating-element">ﷺ</div>
     </div>
 
     <script src="script.js"></script>
