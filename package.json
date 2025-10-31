@@ -1,7 +1,6 @@
 {
   "name": "islomxon-masjidi",
   "version": "1.0.0",
-  "description": "Islomxon Masjidi Bot",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
