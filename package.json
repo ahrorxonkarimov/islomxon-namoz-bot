@@ -1,7 +1,7 @@
 {
   "name": "islomxon-masjidi",
   "version": "1.0.0",
-  "description": "Islomxon Masjidi - Namoz Vaqtlari Bot",
+  "description": "Islomxon Jome Masjidi - Namoz Vaqtlari Bot",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
