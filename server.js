@@ -1,10 +1,7 @@
 const express = require('express');
-const { Telegraf } = require('telegraf');
+const { Telegraf, Markup } = require('telegraf');
 const moment = require('moment');
-const cron = require('node-cron');
 const path = require('path');
-const bodyParser = require('body-parser');
-const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,20 +10,19 @@ const PORT = process.env.PORT || 3000;
 const BOT_TOKEN = '8353179858:AAFMgCR5KLWOh7-4Tid-A4x1RAwPd3-Y9xE';
 const CHANNEL = '@Islomxon_masjidi';
 const ADMIN_IDS = [7894421569, 5985723887, 382697989];
+const WEB_APP_URL = 'https://your-app-name.onrender.com/admin'; // O'Z URL NI QO'YING
 
 const bot = new Telegraf(BOT_TOKEN);
 
 // Middleware
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+app.use(express.static('public'));
 
 // Namoz vaqtlari ma'lumotlari
 let prayerTimes = {
     date: moment().format('DD-MMMM, YYYY yıl'),
     bomdod: "05:45",
-    peshin: "13:15",
+    peshin: "13:15", 
     asr: "16:30",
     shom: "18:45",
     xufton: "20:15"
@@ -36,233 +32,132 @@ let prayerTimes = {
 const translations = {
     uz: {
         title: "Islomxon Jome Masjidi",
-        subtitle: "Namoz vaqtlarini kiriting",
-        date: "Sana",
-        bomdod: "Bomdod",
-        peshin: "Peshin",
-        asr: "Asr",
-        shom: "Shom",
-        xufton: "Xufton",
-        additional: "Qo'shimcha ma'lumot",
-        note: "Yoki eslatma...",
-        optional: "Izoh (ixtiyoriy)",
-        send: "📢 Kanalga yuborish",
-        footer: "Hududingiz uchun to'gri vaqtda ibodatni ado eting. Alloh har bir qadamingizni savobli qilsin!",
-        update: "Yangilash",
-        language: "Til",
-        success: "✅ Post muvaffaqiyatli yuborildi!",
-        error: "❌ Xatolik yuz berdi!",
-        access_denied: "❌ Sizda admin huquqi yo'q!",
-        welcome_admin: "👑 Admin panelga xush kelibsiz!",
-        login_title: "Admin Panelga kirish",
-        login_info: "Faqat adminlar kirishi mumkin"
+        adminWelcome: "🕌 *Assalomu alaykum, {name}!*\n\nSiz *Islomxon Jome Masjidi* botining adminisiz!\n\n📋 *Vazifangiz:* Namoz vaqtlarini kiritish va kanalga post yuborish\n\n⬇️ *Web App orqali yangi vaqtlarni kiriting:*",
+        userWelcome: "🕌 *Assalomu alaykum, {name}!*\n\n*Islomxon Jome Masjidi* botiga xush kelibsiz!\n\n📢 Yangi namoz vaqtlari kanalda e'lon qilinadi:\n@Islomxon_masjidi\n\n🤲 *Alloh ibodatingizni qabul qilsin!*",
+        notAdmin: "❌ *Siz admin emassiz!*\n\nBu bot faqat adminlar uchun. Namoz vaqtlarini @Islomxon_masjidi kanalida kuzating.",
+        currentTimes: "🕐 *Joriy namoz vaqtlari:*"
     },
     ru: {
-        title: "Мечеть Исломхон Джаме",
-        subtitle: "Введите время намаза",
-        date: "Дата",
-        bomdod: "Фаджр",
-        peshin: "Зухр",
-        asr: "Аср",
-        shom: "Магриб",
-        xufton: "Иша",
-        additional: "Дополнительная информация",
-        note: "Или заметка...",
-        optional: "Комментарий (необязательно)",
-        send: "📢 Отправить в канал",
-        footer: "Совершайте поклонение в правильное время для вашего региона. Пусть Аллах вознаградит каждый ваш шаг!",
-        update: "Обновить",
-        language: "Язык",
-        success: "✅ Пост успешно отправлен!",
-        error: "❌ Произошла ошибка!",
-        access_denied: "❌ У вас нет прав администратора!",
-        welcome_admin: "👑 Добро пожаловать в админ панель!",
-        login_title: "Вход в админ панель",
-        login_info: "Только для администраторов"
+        title: "Мечеть Исломхон Джаме", 
+        adminWelcome: "🕌 *Ассаламу алейкум, {name}!*\n\nВы администратор бота *Мечеть Исломхон Джаме*!\n\n📋 *Ваша задача:* Вводить время намаза и отправлять посты в канал\n\n⬇️ *Введите новое время через Web App:*",
+        userWelcome: "🕌 *Ассаламу алейкум, {name}!*\n\nДобро пожаловать в бот *Мечеть Исломхон Джаме*!\n\n📢 Новое время намаза объявляется в канале:\n@Islomxon_masjidi\n\n🤲 *Пусть Аллах примет ваш намаз!*",
+        notAdmin: "❌ *Вы не администратор!*\n\nЭтот бот только для администраторов. Следите за временем намаза в канале @Islomxon_masjidi.",
+        currentTimes: "🕐 *Текущее время намаза:*"
     },
     kr: {
         title: "Исломхон Жоме Масжиди",
-        subtitle: "Намоз вақтларини киритинг",
-        date: "Сана",
-        bomdod: "Бомдод",
-        peshin: "Пешин",
-        asr: "Аср",
-        shom: "Шом",
-        xufton: "Хуфтон",
-        additional: "Қўшимча маълумот",
-        note: "Ёки эслатма...",
-        optional: "Изоҳ (ихтиёрий)",
-        send: "📢 Каналга юбориш",
-        footer: "Ҳудудингиз учун тўғри вақтда ибодатни адо этинг. Аллоҳ ҳар бир қадамингизни савобли қилсин!",
-        update: "Янгилаш",
-        language: "Тил",
-        success: "✅ Пост муваффақиятли юборилди!",
-        error: "❌ Хатолик юз берди!",
-        access_denied: "❌ Сизда админ ҳуқуқи йўқ!",
-        welcome_admin: "👑 Админ панелга хуш келибсиз!",
-        login_title: "Админ панелга кириш",
-        login_info: "Фақат админлар кириши мумкин"
+        adminWelcome: "🕌 *Ассалому алейкум, {name}!*\n\nСиз *Исломхон Жоме Масжиди* ботининг администраторисиз!\n\n📋 *Вазифангиз:* Намоз вақтларини киритиш ва каналга пост юбориш\n\n⬇️ *Web App орқали янги вақтларни киритинг:*",
+        userWelcome: "🕌 *Ассалому алейкум, {name}!*\n\n*Исломхон Жоме Масжиди* ботига хуш келибсиз!\n\n📢 Янги намоз вақтлари каналда эьлон қилинади:\n@Islomxon_masjidi\n\n🤲 *Аллоҳ ибодатингизни қабул қилсин!*", 
+        notAdmin: "❌ *Сиз админ эмассиз!*\n\nБу бот фақат админлар учун. Намоз вақтларини @Islomxon_masjidi каналида кузатинг.",
+        currentTimes: "🕐 *Жорий намоз вақтлари:*"
     }
 };
-
-// ADMIN TEKSHIRISH
-function isAdmin(userId) {
-    return ADMIN_IDS.includes(parseInt(userId));
-}
-
-// CHIROYLI POST YARATISH
-function createBeautifulPost(lang = 'uz') {
-    const t = translations[lang];
-    
-    return `🕌 *${t.title}*
-
-📅 ${t.date}: ${prayerTimes.date}
-
-🕐 *${lang === 'uz' ? 'Namoz vaqtlari' : lang === 'ru' ? 'Время намаза' : 'Намоз вақтлари'}:*
-
-🌅 ${t.bomdod}: ${prayerTimes.bomdod}
-☀️ ${t.peshin}: ${prayerTimes.peshin}
-⛅ ${t.asr}: ${prayerTimes.asr}
-🌇 ${t.shom}: ${prayerTimes.shom}
-🌙 ${t.xufton}: ${prayerTimes.xufton}
-
-${t.footer}
-
-━━━━━━━━━━━━━━
-📍 @Islomxon_masjidi`;
-}
-
-// TELEGRAMGA POST YUBORISH
-async function sendToTelegram(lang = 'uz') {
-    try {
-        const message = createBeautifulPost(lang);
-        
-        await bot.telegram.sendMessage(CHANNEL, message, {
-            parse_mode: 'Markdown',
-            reply_markup: {
-                inline_keyboard: [[
-                    { 
-                        text: lang === 'uz' ? "📍 Manzil" : 
-                              lang === 'ru' ? "📍 Адрес" : "📍 Манзил", 
-                        callback_data: "location" 
-                    },
-                    { 
-                        text: lang === 'uz' ? "📞 Aloqa" : 
-                              lang === 'ru' ? "📞 Контакты" : "📞 Алоқа", 
-                        callback_data: "contact" 
-                    }
-                ]]
-            }
-        });
-        
-        return { success: true, message: translations[lang].success };
-    } catch (error) {
-        return { success: false, message: translations[lang].error + ': ' + error.message };
-    }
-}
 
 // BOT KOMANDALARI
 bot.start((ctx) => {
     const user = ctx.from;
-    const userName = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+    const isAdmin = ADMIN_IDS.includes(user.id);
+    const lang = user.language_code === 'ru' ? 'ru' : 'uz'; // Tilni aniqlash
     
-    console.log(`🎯 /start bosildi: ${user.id} (${userName})`);
-    
-    if (isAdmin(user.id)) {
-        console.log(`✅ ${user.id} admin sifatida tanishdi`);
-        
-        const adminMessage = `👑 *Assalomu alaykum, ${userName}!* ✨
+    if (isAdmin) {
+        // ADMINLAR UCHUN
+        const message = translations[lang].adminWelcome.replace('{name}', user.first_name) + 
+                       `\n\n${translations[lang].currentTimes}\n` +
+                       `🌅 ${lang === 'uz' ? 'Bomdod' : lang === 'ru' ? 'Фаджр' : 'Бомдод'}: ${prayerTimes.bomdod}\n` +
+                       `☀️ ${lang === 'uz' ? 'Peshin' : lang === 'ru' ? 'Зухр' : 'Пешин'}: ${prayerTimes.peshin}\n` +
+                       `⛅ ${lang === 'uz' ? 'Asr' : lang === 'ru' ? 'Аср' : 'Аср'}: ${prayerTimes.asr}\n` +
+                       `🌇 ${lang === 'uz' ? 'Shom' : lang === 'ru' ? 'Магриб' : 'Шом'}: ${prayerTimes.shom}\n` +
+                       `🌙 ${lang === 'uz' ? 'Xufton' : lang === 'ru' ? 'Иша' : 'Хуфтон'}: ${prayerTimes.xufton}`;
 
-🕌 *Islomxon Jome Masjidi* botiga xush kelibsiz!
-
-Siz *admin* sifatida tanishdingiz.
-
-🌐 *Web Admin Panel:*
-https://${process.env.RENDER_URL || 'localhost:3000'}/admin
-
-📋 *Admin imkoniyatlari:*
-• Namoz vaqtlarini o'zgartirish
-• Kanalga avtomatik post yuborish
-• 3 tilda post tayyorlash
-
-🕐 *Joriy namoz vaqtlari:*
-Bomdod: ${prayerTimes.bomdod}
-Peshin: ${prayerTimes.peshin}
-Asr: ${prayerTimes.asr}
-Shom: ${prayerTimes.shom}
-Xufton: ${prayerTimes.xufton}
-
-*Web panel orqali yangi vaqtlarni kiriting!*`;
-        
-        ctx.replyWithMarkdown(adminMessage);
+        ctx.replyWithMarkdown(message, {
+            reply_markup: {
+                inline_keyboard: [
+                    [{
+                        text: "📱 Vaqtlarni kiritish",
+                        web_app: { url: WEB_APP_URL }
+                    }],
+                    [{
+                        text: "📢 Bizning kanal",
+                        url: "https://t.me/Islomxon_masjidi"
+                    }],
+                    [{
+                        text: "📷 Instagram", 
+                        url: "https://instagram.com/islomxon_masjidi"
+                    }],
+                    [{
+                        text: "👑 Admin",
+                        url: "https://t.me/Abdulloh_Ummati_Muhammad"
+                    }]
+                ]
+            }
+        });
     } else {
-        const userMessage = `🕌 *Assalomu alaykum, ${userName}!* ✨
+        // ODDIY FOYDALANUVCHILAR UCHUN
+        const message = translations[lang].notAdmin;
 
-*Islomxon Jome Masjidi* botiga xush kelibsiz!
-
-📢 *Yangi namoz vaqtlari:*
-@Islomxon_masjidi kanalida e'lon qilinadi.
-
-🕐 *Bugungi namoz vaqtlari:*
-Bomdod: ${prayerTimes.bomdod}
-Peshin: ${prayerTimes.peshin}
-Asr: ${prayerTimes.asr}
-Shom: ${prayerTimes.shom}
-Xufton: ${prayerTimes.xufton}
-
-🤲 *Alloh har bir ibodatingizni qabul qilsin!*
-
-━━━━━━━━━━━━━━
-📍 @Islomxon_masjidi`;
-        
-        ctx.replyWithMarkdown(userMessage, {
+        ctx.replyWithMarkdown(message, {
             reply_markup: {
                 inline_keyboard: [[
-                    { text: "📢 Kanalga obuna bo'lish", url: "https://t.me/Islomxon_masjidi" }
+                    {
+                        text: "📢 Kanalga obuna bo'lish",
+                        url: "https://t.me/Islomxon_masjidi"
+                    }
                 ]]
             }
         });
     }
 });
 
-// NAMOZ VAQTLARI KOMANDASI
-bot.command('vaqtlar', (ctx) => {
-    const message = createBeautifulPost('uz');
-    ctx.replyWithMarkdown(message);
-});
+// TELEGRAMGA POST YUBORISH
+async function sendToTelegram(lang = 'uz') {
+    try {
+        const titles = {
+            uz: { title: "Islomxon Jome Masjidi", times: "Namoz Vaqtlari" },
+            ru: { title: "Мечеть Исломхон Джаме", times: "Время Намаза" },
+            kr: { title: "Исломхон Жоме Масжиди", times: "Намоз Вақтлари" }
+        };
+        
+        const t = titles[lang];
+        const message = `🕌 *${t.title}*\n\n` +
+                       `📅 ${lang === 'uz' ? 'Sana' : lang === 'ru' ? 'Дата' : 'Сана'}: ${prayerTimes.date}\n\n` +
+                       `🕐 *${t.times}:*\n\n` +
+                       `🌅 ${lang === 'uz' ? 'Bomdod' : lang === 'ru' ? 'Фаджр' : 'Бомдод'}: ${prayerTimes.bomdod}\n` +
+                       `☀️ ${lang === 'uz' ? 'Peshin' : lang === 'ru' ? 'Зухр' : 'Пешин'}: ${prayerTimes.peshin}\n` +
+                       `⛅ ${lang === 'uz' ? 'Asr' : lang === 'ru' ? 'Аср' : 'Аср'}: ${prayerTimes.asr}\n` +
+                       `🌇 ${lang === 'uz' ? 'Shom' : lang === 'ru' ? 'Магриб' : 'Шом'}: ${prayerTimes.shom}\n` +
+                       `🌙 ${lang === 'uz' ? 'Xufton' : lang === 'ru' ? 'Иша' : 'Хуфтон'}: ${prayerTimes.xufton}\n\n` +
+                       `🤲 ${lang === 'uz' ? 
+                           "Hududingiz uchun to'g'ri vaqtda ibodatni ado eting. Alloh har bir qadamingizni savobli qilsin!" :
+                           lang === 'ru' ?
+                           "Совершайте поклонение в правильное время для вашего региона. Пусть Аллах вознаградит каждый ваш шаг!" :
+                           "Ҳудудингиз учун тўғри вақтда ибодатни адо этинг. Аллоҳ ҳар бир қадамингизни савобли қилсин!"}\n\n` +
+                       `━━━━━━━━━━━━━━\n` +
+                       `📍 @Islomxon_masjidi`;
 
-// YORDAM KOMANDASI
-bot.command('help', (ctx) => {
-    ctx.replyWithMarkdown(`🕌 *Islomxon Jome Masjidi Bot*
+        await bot.telegram.sendMessage(CHANNEL, message, {
+            parse_mode: 'Markdown',
+            reply_markup: {
+                inline_keyboard: [
+                    [{
+                        text: "📷 Instagram", 
+                        url: "https://instagram.com/islomxon_masjidi"
+                    }],
+                    [{
+                        text: "👑 Admin",
+                        url: "https://t.me/Abdulloh_Ummati_Muhammad"
+                    }]
+                ]
+            }
+        });
+        
+        return { success: true, message: "✅ Post muvaffaqiyatli yuborildi!" };
+    } catch (error) {
+        console.error('Post yuborishda xatolik:', error);
+        return { success: false, message: "❌ Post yuborishda xatolik!" };
+    }
+}
 
-📋 *Mavjud komandalar:*
-/start - Botni ishga tushirish
-/vaqtlar - Namoz vaqtlari
-/help - Yordam
-
-📢 *Yangiliklar:* @Islomxon_masjidi
-
-🤲 *Alloh qabul qilsin!*`);
-});
-
-// AVTOMATIK POSTLAR
-cron.schedule('0 6 * * *', () => {
-    console.log('🕐 Ertalabki post yuborilmoqda...');
-    sendToTelegram('uz');
-});
-
-cron.schedule('0 12 * * *', () => {
-    console.log('🕐 Peshin vaqti post yuborilmoqda...');
-    sendToTelegram('uz');
-});
-
-// HAR KUNI SANANI YANGILASH
-cron.schedule('0 0 * * *', () => {
-    prayerTimes.date = moment().format('DD-MMMM, YYYY yıl');
-    console.log('📅 Sana yangilandi:', prayerTimes.date);
-});
-
-// API ROUTES
+// WEB API ROUTES
 app.get('/api/prayer-times', (req, res) => {
     const lang = req.query.lang || 'uz';
     res.json({
@@ -272,51 +167,22 @@ app.get('/api/prayer-times', (req, res) => {
     });
 });
 
-app.post('/api/check-admin', (req, res) => {
-    const { userId } = req.body;
+app.post('/api/update-times', async (req, res) => {
+    const { bomdod, peshin, asr, shom, xufton, lang = 'uz' } = req.body;
     
-    if (isAdmin(parseInt(userId))) {
-        res.json({ 
-            success: true, 
-            message: translations.uz.welcome_admin,
-            user: { 
-                id: userId, 
-                isAdmin: true 
-            }
-        });
-    } else {
-        res.json({ 
-            success: false, 
-            message: translations.uz.access_denied,
-            user: { isAdmin: false }
-        });
-    }
-});
-
-app.post('/api/prayer-times', async (req, res) => {
-    const { date, bomdod, peshin, asr, shom, xufton, lang = 'uz', userId } = req.body;
-    
-    // ADMIN TEKSHIRISH
-    if (!isAdmin(parseInt(userId))) {
-        return res.json({ 
-            success: false, 
-            message: translations[lang].access_denied 
-        });
-    }
-    
-    // MA'LUMOTLARNI YANGILASH
+    // Yangilash
     prayerTimes = {
-        date: date || prayerTimes.date,
-        bomdod: bomdod || prayerTimes.bomdod,
-        peshin: peshin || prayerTimes.peshin,
-        asr: asr || prayerTimes.asr,
-        shom: shom || prayerTimes.shom,
-        xufton: xufton || prayerTimes.xufton
+        date: moment().format('DD-MMMM, YYYY yıl'),
+        bomdod: bomdod,
+        peshin: peshin,
+        asr: asr,
+        shom: shom,
+        xufton: xufton
     };
     
-    console.log('🔄 Namoz vaqtlari yangilandi:', prayerTimes);
+    console.log('Yangi namoz vaqtlari:', prayerTimes);
     
-    // TELEGRAMGA YUBORISH
+    // Telegramga post yuborish
     const result = await sendToTelegram(lang);
     
     res.json({
@@ -328,29 +194,27 @@ app.post('/api/prayer-times', async (req, res) => {
 
 // WEB ROUTES
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.send('Islomxon Masjidi Bot Serveri ishlamoqda!');
 });
 
 app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
-// BOTNI ISHGA TUSHIRISH
-bot.launch().then(() => {
-    console.log('🤖 Bot muvaffaqiyatli ishga tushdi!');
-    console.log('👑 Adminlar:', ADMIN_IDS);
-    console.log('📢 Kanal:', CHANNEL);
-}).catch(err => {
-    console.error('❌ Bot ishga tushirishda xatolik:', err);
-});
-
-// SERVERNI ISHGA TUSHIRISH
-app.listen(PORT, () => {
+// SERVER VA BOTNI ISHGA TUSHIRISH
+app.listen(PORT, async () => {
     console.log(`🚀 Server ${PORT}-portda ishlamoqda`);
-    console.log(`🌐 Asosiy sahifa: http://localhost:${PORT}`);
-    console.log(`⚙️ Admin panel: http://localhost:${PORT}/admin`);
+    
+    try {
+        await bot.launch();
+        console.log('🤖 Bot muvaffaqiyatli ishga tushdi!');
+        console.log('👑 Adminlar:', ADMIN_IDS);
+        console.log('📢 Kanal:', CHANNEL);
+        console.log('🌐 Web App:', WEB_APP_URL);
+    } catch (error) {
+        console.error('❌ Bot ishga tushirishda xatolik:', error);
+    }
 });
 
-// GRACEFUL SHUTDOWN
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
