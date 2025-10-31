@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const moment = require('moment');
-const cron = require('node-cron');
 const path = require('path');
 
 const app = express();
@@ -12,70 +11,74 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Namoz vaqtlari ma'lumotlari
 let prayerTimes = {
-    date: "15-dekabr, 2024 yıl",
-    bomdod: "06:00",
-    peshin: "12:30",
-    asr: "15:45",
-    shom: "18:20",
-    xufton: "19:45"
+    date: moment().format('DD-MMMM, YYYY yıl'),
+    bomdod: "05:45",
+    peshin: "13:15",
+    asr: "16:30",
+    shom: "18:45",
+    xufton: "20:15",
+    quyosh: "07:30"
 };
 
 // Til sozlamalari
 const translations = {
     uz: {
         title: "Islomxon Jome Masjidi",
-        subtitle: "Namoz vaqtlarini kiriting",
-        date: "Sana",
+        subtitle: "Namoz vaqtlari",
+        date: "Bugun",
         bomdod: "Bomdod",
         peshin: "Peshin",
         asr: "Asr",
         shom: "Shom",
         xufton: "Xufton",
-        additional: "Qo'shimcha ma'lumot",
-        note: "Yoki eslatma...",
-        optional: "Izoh (ixtiyoriy)",
-        send: "Kanalga yuborish",
-        footer: "Hududingiz uchun to'gri vaqtda ibodatni ado eting. Alloh har bir qadamingizni savobli qilsin!",
-        update: "Yangilash",
-        language: "Til"
+        quyosh: "Quyosh",
+        additional: "Ma'lumot",
+        note: "Masjidimiz har kuni 5 vaqt namoz o'qiladi",
+        footer: "Vaqtni Alloh yo'lida sarflang. Har bir namozingiz qabul bo'lsin!",
+        location: "Manzil: Toshkent shahar, Yunusobod tumani",
+        nextPrayer: "Keyingi namoz",
+        timeLeft: "qoldi",
+        currentTime: "Joriy vaqt"
     },
     ru: {
         title: "Мечеть Исломхон Джаме",
-        subtitle: "Введите время намаза",
-        date: "Дата",
+        subtitle: "Время намаза",
+        date: "Сегодня",
         bomdod: "Фаджр",
         peshin: "Зухр",
         asr: "Аср",
         shom: "Магриб",
         xufton: "Иша",
-        additional: "Дополнительная информация",
-        note: "Или заметка...",
-        optional: "Комментарий (необязательно)",
-        send: "Отправить в канал",
-        footer: "Совершайте поклонение в правильное время для вашего региона. Пусть Аллах вознаградит каждый ваш шаг!",
-        update: "Обновить",
-        language: "Язык"
+        quyosh: "Восход",
+        additional: "Информация",
+        note: "В нашей мечети совершается 5 ежедневных намазов",
+        footer: "Проводите время на пути Аллаха. Пусть каждый ваш намаз будет принят!",
+        location: "Адрес: Ташкент, Юнусабадский район",
+        nextPrayer: "Следующий намаз",
+        timeLeft: "осталось",
+        currentTime: "Текущее время"
     },
     en: {
         title: "Islomxon Jome Mosque",
-        subtitle: "Enter prayer times",
-        date: "Date",
+        subtitle: "Prayer Times",
+        date: "Today",
         bomdod: "Fajr",
         peshin: "Dhuhr",
         asr: "Asr",
         shom: "Maghrib",
         xufton: "Isha",
-        additional: "Additional information",
-        note: "Or note...",
-        optional: "Comment (optional)",
-        send: "Send to channel",
-        footer: "Perform worship at the correct time for your region. May Allah reward every step you take!",
-        update: "Update",
-        language: "Language"
+        quyosh: "Sunrise",
+        additional: "Information",
+        note: "5 daily prayers are performed in our mosque",
+        footer: "Spend time in the way of Allah. May every prayer be accepted!",
+        location: "Address: Tashkent, Yunusabad district",
+        nextPrayer: "Next prayer",
+        timeLeft: "left",
+        currentTime: "Current time"
     }
 };
 
@@ -84,13 +87,14 @@ app.get('/api/prayer-times', (req, res) => {
     const lang = req.query.lang || 'uz';
     const response = {
         ...prayerTimes,
-        translations: translations[lang]
+        translations: translations[lang],
+        timestamp: new Date().toISOString()
     };
     res.json(response);
 });
 
 app.post('/api/prayer-times', (req, res) => {
-    const { date, bomdod, peshin, asr, shom, xufton } = req.body;
+    const { date, bomdod, peshin, asr, shom, xufton, quyosh } = req.body;
     
     prayerTimes = {
         date: date || prayerTimes.date,
@@ -98,37 +102,29 @@ app.post('/api/prayer-times', (req, res) => {
         peshin: peshin || prayerTimes.peshin,
         asr: asr || prayerTimes.asr,
         shom: shom || prayerTimes.shom,
-        xufton: xufton || prayerTimes.xufton
+        xufton: xufton || prayerTimes.xufton,
+        quyosh: quyosh || prayerTimes.quyosh
     };
     
-    res.json({ success: true, message: "Namoz vaqtlari yangilandi", data: prayerTimes });
+    res.json({ 
+        success: true, 
+        message: "Namoz vaqtlari muvaffaqiyatli yangilandi!", 
+        data: prayerTimes 
+    });
 });
 
-app.get('/api/translations', (req, res) => {
-    const lang = req.query.lang || 'uz';
-    res.json(translations[lang]);
-});
-
-// Admin route
-app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'admin.html'));
-});
-
-// Main route
+// HTML Routes
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Vaqtni avtomatik yangilash
-cron.schedule('0 0 * * *', () => {
-    const tomorrow = moment().add(1, 'days');
-    prayerTimes.date = tomorrow.format('DD-MMMM, YYYY yıl');
-    console.log('Namoz vaqtlari yangilandi:', prayerTimes.date);
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 // Serverni ishga tushirish
 app.listen(PORT, () => {
-    console.log(`Server ${PORT}-portda ishlamoqda`);
-    console.log(`Asosiy sahifa: http://localhost:${PORT}`);
-    console.log(`Admin panel: http://localhost:${PORT}/admin`);
+    console.log(`🕌 Islomxon Masjidi web sayti ${PORT}-portda ishlamoqda`);
+    console.log(`🌐 Asosiy sahifa: http://localhost:${PORT}`);
+    console.log(`⚙️ Admin panel: http://localhost:${PORT}/admin`);
 });
