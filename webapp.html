@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Islomxon Namoz Vaqtlari</title>
+    <title>Islomxon Masjidi Namoz Vaqtlari</title>
     <!-- CSS qismi o'zgarmadi, oldingi kabi -->
     <style>
         /* Oldingi CSS kodi bu yerda */
@@ -89,8 +89,8 @@
                     </div>
 
                     <div class="input-group">
-                        <label for="hufton">🌙 Hufton</label>
-                        <input type="text" id="hufton" name="hufton" required 
+                        <label for="xufton">🌙 Xufton</label>
+                        <input type="text" id="xufton" name="xufton" required 
                                placeholder="19:45" oninput="updatePreview()">
                     </div>
                 </div>
@@ -114,7 +114,7 @@
         </main>
 
         <footer class="footer">
-            <p>Islomxon Namoz Vaqti Bot • @Islomxon_masjidi</p>
+            <p>Islomxon jome masjidi • @Islomxon_masjidi</p>
         </footer>
     </div>
 
@@ -138,10 +138,10 @@
             const peshin = document.getElementById('peshin').value;
             const asr = document.getElementById('asr').value;
             const shom = document.getElementById('shom').value;
-            const hufton = document.getElementById('hufton').value;
+            const hufton = document.getElementById('xufton').value;
             const izoh = document.getElementById('izoh').value;
 
-            if (sana || bomdod || peshin || asr || shom || hufton) {
+            if (sana || bomdod || peshin || asr || shom || xufton) {
                 document.getElementById('previewSection').style.display = 'block';
                 
                 let preview = `🕌 Islomxon Jome Masjidi\n`;
@@ -151,7 +151,7 @@
                 preview += `☀️ Peshin: ${peshin || '__:__'}\n`;
                 preview += `🌤️ Asr: ${asr || '__:__'}\n`;
                 preview += `🌇 Shom: ${shom || '__:__'}\n`;
-                preview += `🌙 Hufton: ${hufton || '__:__'}\n\n`;
+                preview += `🌙 Xufton: ${xufton || '__:__'}\n\n`;
                 
                 if (izoh) {
                     preview += `💫 Izoh: ${izoh}\n\n`;
@@ -197,7 +197,7 @@
                     peshin: document.getElementById('peshin').value,
                     asr: document.getElementById('asr').value,
                     shom: document.getElementById('shom').value,
-                    hufton: document.getElementById('hufton').value,
+                    hufton: document.getElementById('xufton').value,
                     sana: document.getElementById('sana').value,
                     izoh: document.getElementById('izoh').value,
                     userId: tg?.initDataUnsafe?.user?.id || 5985723887
