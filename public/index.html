@@ -5,60 +5,165 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Islomxon Jome Masjidi - Namoz Vaqtlari</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+    </div>
+
     <div class="container">
-        <div class="header">
+        <!-- Header -->
+        <header class="header">
             <div class="language-switcher">
-                <select id="languageSelect">
-                    <option value="uz">O'zbek</option>
-                    <option value="ru">Русский</option>
-                    <option value="en">English</option>
+                <select id="languageSelect" class="lang-select">
+                    <option value="uz">🇺🇿 O'Z</option>
+                    <option value="ru">🇷🇺 RU</option>
+                    <option value="en">🇺🇸 EN</option>
                 </select>
             </div>
-            <h1 id="title">Islomxon Jome Masjidi</h1>
-            <p id="subtitle">Namoz vaqtlarini kiriting</p>
+            
+            <div class="masjid-icon">
+                <i class="fas fa-mosque"></i>
+            </div>
+            
+            <h1 class="title" id="title">Islomxon Jome Masjidi</h1>
+            <p class="subtitle" id="subtitle">Namoz vaqtlari</p>
+            
+            <div class="current-time">
+                <i class="fas fa-clock"></i>
+                <span id="currentTime">00:00:00</span>
+            </div>
+        </header>
+
+        <!-- Next Prayer -->
+        <div class="next-prayer-card">
+            <div class="next-prayer-content">
+                <i class="fas fa-praying-hands"></i>
+                <div class="next-prayer-info">
+                    <span class="next-label" id="nextPrayerLabel">Keyingi namoz</span>
+                    <span class="next-name" id="nextPrayerName">Bomdod</span>
+                    <span class="next-time" id="nextPrayerTime">05:45</span>
+                </div>
+                <div class="countdown" id="countdown">
+                    <span id="timeLeft">00:00:00</span>
+                    <span class="left-label" id="timeLeftLabel">qoldi</span>
+                </div>
+            </div>
         </div>
 
+        <!-- Prayer Times -->
         <div class="prayer-times">
-            <div class="time-item">
-                <span class="prayer-name" id="dateLabel">Sana</span>
-                <span class="prayer-time" id="dateValue">15-dekabr, 2024 yıl</span>
+            <div class="time-card" data-prayer="bomdod">
+                <div class="prayer-icon">
+                    <i class="fas fa-sun"></i>
+                </div>
+                <div class="prayer-info">
+                    <span class="prayer-name" id="bomdodLabel">Bomdod</span>
+                    <span class="prayer-time" id="bomdodValue">05:45</span>
+                </div>
+                <div class="prayer-animation"></div>
             </div>
-            <div class="time-item">
-                <span class="prayer-name" id="bomdodLabel">Bomdod</span>
-                <span class="prayer-time" id="bomdodValue">06:00</span>
+
+            <div class="time-card" data-prayer="quyosh">
+                <div class="prayer-icon">
+                    <i class="fas fa-sunrise"></i>
+                </div>
+                <div class="prayer-info">
+                    <span class="prayer-name" id="quyoshLabel">Quyosh</span>
+                    <span class="prayer-time" id="quyoshValue">07:30</span>
+                </div>
+                <div class="prayer-animation"></div>
             </div>
-            <div class="time-item">
-                <span class="prayer-name" id="peshinLabel">Peshin</span>
-                <span class="prayer-time" id="peshinValue">12:30</span>
+
+            <div class="time-card" data-prayer="peshin">
+                <div class="prayer-icon">
+                    <i class="fas fa-sun"></i>
+                </div>
+                <div class="prayer-info">
+                    <span class="prayer-name" id="peshinLabel">Peshin</span>
+                    <span class="prayer-time" id="peshinValue">13:15</span>
+                </div>
+                <div class="prayer-animation"></div>
             </div>
-            <div class="time-item">
-                <span class="prayer-name" id="asrLabel">Asr</span>
-                <span class="prayer-time" id="asrValue">15:45</span>
+
+            <div class="time-card" data-prayer="asr">
+                <div class="prayer-icon">
+                    <i class="fas cloud-sun"></i>
+                </div>
+                <div class="prayer-info">
+                    <span class="prayer-name" id="asrLabel">Asr</span>
+                    <span class="prayer-time" id="asrValue">16:30</span>
+                </div>
+                <div class="prayer-animation"></div>
             </div>
-            <div class="time-item">
-                <span class="prayer-name" id="shomLabel">Shom</span>
-                <span class="prayer-time" id="shomValue">18:20</span>
+
+            <div class="time-card" data-prayer="shom">
+                <div class="prayer-icon">
+                    <i class="fas fa-sunset"></i>
+                </div>
+                <div class="prayer-info">
+                    <span class="prayer-name" id="shomLabel">Shom</span>
+                    <span class="prayer-time" id="shomValue">18:45</span>
+                </div>
+                <div class="prayer-animation"></div>
             </div>
-            <div class="time-item">
-                <span class="prayer-name" id="xuftonLabel">Xufton</span>
-                <span class="prayer-time" id="xuftonValue">19:45</span>
+
+            <div class="time-card" data-prayer="xufton">
+                <div class="prayer-icon">
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="prayer-info">
+                    <span class="prayer-name" id="xuftonLabel">Xufton</span>
+                    <span class="prayer-time" id="xuftonValue">20:15</span>
+                </div>
+                <div class="prayer-animation"></div>
             </div>
         </div>
 
-        <div class="additional-info">
-            <h3 id="additionalLabel">Qo'shimcha ma'lumot</h3>
-            <p id="noteText">Yoki eslatma...</p>
+        <!-- Additional Info -->
+        <div class="info-card">
+            <div class="info-header">
+                <i class="fas fa-info-circle"></i>
+                <h3 id="additionalLabel">Ma'lumot</h3>
+            </div>
+            <p class="info-text" id="noteText">Masjidimiz har kuni 5 vaqt namoz o'qiladi</p>
+            <p class="location" id="locationText">
+                <i class="fas fa-map-marker-alt"></i>
+                Manzil: Toshkent shahar, Yunusobod tumani
+            </p>
         </div>
 
-        <div class="footer">
-            <p id="footerText">Hududingiz uchun to'gri vaqtda ibodatni ado eting. Alloh har bir qadamingizni savobli qilsin!</p>
-            <div class="contact">
-                <p>Islomxon jome masjidi • @Islomxon_masjidi</p>
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text" id="footerText">
+                Vaqtni Alloh yo'lida sarflang. Har bir namozingiz qabul bo'lsin!
+            </p>
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-link">
+                    <i class="fab fa-youtube"></i>
+                </a>
             </div>
-        </div>
+            <div class="copyright">
+                <p>Islomxon Jome Masjidi • @Islomxon_masjidi</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-element el-1">﷽</div>
+        <div class="floating-element el-2">﴾﴿</div>
+        <div class="floating-element el-3">ﷺ</div>
     </div>
 
     <script src="script.js"></script>
