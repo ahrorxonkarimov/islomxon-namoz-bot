@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 const BOT_TOKEN = '8353179858:AAFMgCR5KLWOh7-4Tid-A4x1RAwPd3-Y9xE';
 const CHANNEL = '@Islomxon_masjidi';
 const ADMIN_IDS = [7894421569, 5985723887, 382697989];
-const WEB_APP_URL = 'https://your-app-name.onrender.com/admin'; // O'Z URL NI QO'YING
+const WEB_APP_URL = 'https://islomxon-namoz-bot.onrender.com'; // O'Z URL NI QO'YING
 
 const bot = new Telegraf(BOT_TOKEN);
 
