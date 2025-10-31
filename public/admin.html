@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Islomxon Masjidi</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <div class="admin-container">
+        <!-- Header -->
+        <div class="admin-header">
+            <div class="header-content">
+                <div class="masjid-icon">
+                    <i class="fas fa-mosque"></i>
+                </div>
+                <h1 id="adminTitle">Islomxon Jome Masjidi</h1>
+                <p id="adminSubtitle">Admin Panel</p>
+            </div>
+            
+            <div class="language-switcher">
+                <select id="languageSelect" class="lang-select">
+                    <option value="uz">🇺🇿 O'zbek</option>
+                    <option value="ru">🇷🇺 Русский</option>
+                    <option value="kr">🇺🇿 Ўзбек (Крил)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="form-container">
+            <form id="prayerForm" class="prayer-form">
+                <div class="form-group">
+                    <label for="date" id="dateLabel">Sana</label>
+                    <input type="text" id="date" class="form-input" value="15-dekabr, 2024 yıl">
+                </div>
+
+                <div class="prayer-grid">
+                    <div class="prayer-input">
+                        <label for="bomdod" id="bomdodLabel">Bomdod</label>
+                        <input type="time" id="bomdod" class="time-input" value="05:45">
+                    </div>
+                    <div class="prayer-input">
+                        <label for="peshin" id="peshinLabel">Peshin</label>
+                        <input type="time" id="peshin" class="time-input" value="13:15">
+                    </div>
+                    <div class="prayer-input">
+                        <label for="asr" id="asrLabel">Asr</label>
+                        <input type="time" id="asr" class="time-input" value="16:30">
+                    </div>
+                    <div class="prayer-input">
+                        <label for="shom" id="shomLabel">Shom</label>
+                        <input type="time" id="shom" class="time-input" value="18:45">
+                    </div>
+                    <div class="prayer-input">
+                        <label for="xufton" id="xuftonLabel">Xufton</label>
+                        <input type="time" id="xufton" class="time-input" value="20:15">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="comment" id="optionalLabel">Izoh (ixtiyoriy)</label>
+                    <textarea id="comment" class="form-textarea" placeholder="Qo'shimcha izoh..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="sendBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Kanalga yuborish</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Result Message -->
+        <div id="resultMessage" class="result-message"></div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
